@@ -1,55 +1,30 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { gsap } from "gsap";
 import { Menu, X, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import { BrutalistButton } from "@/components/ui/brutalist-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
-  { name: "Browse Cars", href: "/cars" },
+  { name: "Cars", href: "/cars" },
   { name: "Locations", href: "/locations" },
   { name: "Deals", href: "/deals" },
   { name: "How It Works", href: "/how-it-works" },
-  { name: "About", href: "/about" },
 ];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
-  const navRef = useRef<HTMLElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const lastScrollY = useRef(0);
-
-  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Background logic
-      if (currentScrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-
-      // Hide/Show logic based on scroll direction
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        // Scrolling down & passed threshold
-        setIsHidden(true);
-      } else if (currentScrollY < lastScrollY.current) {
-        // Scrolling up
-        setIsHidden(false);
-      }
-
-      lastScrollY.current = currentScrollY;
+      setIsScrolled(window.scrollY > 24);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -58,91 +33,41 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle mobile menu animation
-  useEffect(() => {
-    if (!mobileMenuRef.current) return;
-
-    const ctx = gsap.context(() => {
-      if (isMobileMenuOpen) {
-        gsap.to(mobileMenuRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          ease: "power3.out",
-          display: "block",
-        });
-        // Stagger links
-        gsap.fromTo(
-          ".mobile-link",
-          { y: 20, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.4,
-            stagger: 0.05,
-            ease: "power3.out",
-            delay: 0.1,
-          },
-        );
-      } else {
-        gsap.to(mobileMenuRef.current, {
-          y: -20,
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            if (mobileMenuRef.current) {
-              mobileMenuRef.current.style.display = "none";
-            }
-          },
-        });
-      }
-    }, mobileMenuRef);
-
-    return () => ctx.revert();
-  }, [isMobileMenuOpen]);
-
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Hide navbar on auth routes
   if (pathname === "/login" || pathname === "/signup") {
     return null;
   }
 
   return (
     <header
-      ref={navRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-200 ease-out",
         isScrolled
-          ? "bg-[var(--surface-elevated)] border-b border-[var(--border-color)] py-4 shadow-sm"
-          : "bg-transparent py-6",
-        isHidden ? "-translate-y-full" : "translate-y-0",
+          ? "bg-[var(--background)] border-b border-[var(--border)] py-4"
+          : "bg-transparent py-6 border-b border-transparent",
       )}
     >
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 relative z-50">
-            <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              DriveNow
+            <span className="text-3xl font-display uppercase tracking-wider text-[var(--text-primary)]">
+              DRIVENOW
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-[var(--accent)]",
+                  "text-sm font-bold uppercase tracking-widest transition-colors link-underline",
                   pathname === link.href
-                    ? "text-[var(--foreground)] font-semibold"
-                    : "text-[var(--text-secondary)]",
+                    ? "text-[#e8b430]"
+                    : "text-[var(--text-primary)] hover:text-[#e8b430]",
                 )}
               >
                 {link.name}
@@ -150,76 +75,152 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop Right Actions */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-6">
             {status === "authenticated" ? (
-              <Button asChild variant="secondary">
-                <Link href="/dashboard">Dashboard</Link>
-              </Button>
+              <Link
+                href="/dashboard"
+                className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)] hover:text-[#e8b430] transition-colors link-underline"
+              >
+                Dashboard
+              </Link>
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors"
+                className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)] hover:text-[#e8b430] transition-colors link-underline"
               >
                 Sign In
               </Link>
             )}
-            <Button asChild variant="primary">
-              <Link href="/cars">Rent a Car</Link>
-            </Button>
+            <BrutalistButton
+              href="/cars"
+              className="px-6 py-2.5 text-sm h-auto rounded-none hidden sm:inline-flex"
+              containerClassName="rounded-none hidden sm:inline-block"
+            >
+              <span>Rent a car</span>
+            </BrutalistButton>
+            <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden relative z-50 p-2 text-[var(--foreground)]"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex lg:hidden items-center gap-2 relative z-50">
+            <ThemeToggle />
+            <button
+              className="p-2 text-[var(--text-primary)]"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <div
-        ref={mobileMenuRef}
-        className="fixed inset-0 top-[72px] z-40 bg-[var(--background)] p-6 hidden h-[calc(100vh-72px)] overflow-y-auto border-t border-[var(--border-color)]"
-        style={{ opacity: 0, transform: "translateY(-20px)" }}
+        className={cn(
+          "fixed inset-0 top-[72px] z-40 bg-[var(--background)] p-6 h-[calc(100vh-72px)] overflow-y-auto border-t border-[var(--border)] transition-all duration-200 ease-out",
+          isMobileMenuOpen
+            ? "opacity-100 translate-y-0 visible"
+            : "opacity-0 -translate-y-2 invisible",
+        )}
       >
         <div className="flex flex-col gap-6 pt-4">
-          <nav className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
+          <nav className="flex flex-col gap-6">
+            {navLinks.map((link, idx) => (
+              <div
                 key={link.name}
-                href={link.href}
-                className="mobile-link text-2xl font-semibold text-[var(--foreground)]"
+                style={{
+                  transitionDelay: isMobileMenuOpen
+                    ? `${100 + idx * 75}ms`
+                    : "0ms",
+                }}
+                className={cn(
+                  "transition-all duration-400 ease-out",
+                  isMobileMenuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-6",
+                )}
               >
-                {link.name}
-              </Link>
+                <Link
+                  href={link.href}
+                  className="text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] hover:text-[#e8b430] block w-full"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              </div>
             ))}
           </nav>
 
-          <div className="h-px w-full bg-[var(--border-color)] my-4" />
+          <div
+            style={{
+              transitionDelay: isMobileMenuOpen
+                ? `${100 + navLinks.length * 75}ms`
+                : "0ms",
+            }}
+            className={cn(
+              "h-1 w-full bg-[var(--text-primary)] my-6 origin-left transition-all duration-500 ease-out",
+              isMobileMenuOpen
+                ? "opacity-100 scale-x-100"
+                : "opacity-0 scale-x-0",
+            )}
+          />
 
-          <div className="flex flex-col gap-4">
-            {status !== "authenticated" ? (
-              <Link
-                href="/login"
-                className="mobile-link flex items-center gap-2 text-lg font-medium text-[var(--text-secondary)]"
-              >
-                <User size={20} />
-                Sign In / Account
-              </Link>
-            ) : (
-              <Button asChild variant="secondary">
-                <Link href="/dashboard" className="text-[16px] font-bold">
+          <div className="flex flex-col gap-6">
+            <div
+              style={{
+                transitionDelay: isMobileMenuOpen
+                  ? `${100 + (navLinks.length + 1) * 75}ms`
+                  : "0ms",
+              }}
+              className={cn(
+                "transition-all duration-400 ease-out",
+                isMobileMenuOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 -translate-y-6",
+              )}
+            >
+              {status !== "authenticated" ? (
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-2xl font-black uppercase text-[var(--text-primary)] hover:text-[#e8b430]"
+                >
+                  <User size={24} />
+                  Sign In
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-2xl font-black uppercase text-[var(--text-primary)] hover:text-[#e8b430]"
+                >
                   Dashboard
                 </Link>
-              </Button>
-            )}
-            <Button asChild size="lg" className="mobile-link w-full mt-4">
-              <Link href="/cars">Rent a Car</Link>
-            </Button>
+              )}
+            </div>
+
+            <div
+              style={{
+                transitionDelay: isMobileMenuOpen
+                  ? `${100 + (navLinks.length + 2) * 75}ms`
+                  : "0ms",
+              }}
+              className={cn(
+                "transition-all duration-400 ease-out mt-4",
+                isMobileMenuOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 -translate-y-6",
+              )}
+            >
+              <BrutalistButton
+                href="/cars"
+                className="py-5 text-xl"
+                containerClassName="w-full text-center"
+              >
+                <span onClick={() => setIsMobileMenuOpen(false)}>
+                  Rent a car
+                </span>
+              </BrutalistButton>
+            </div>
           </div>
         </div>
       </div>

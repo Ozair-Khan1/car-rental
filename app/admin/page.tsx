@@ -25,7 +25,7 @@ export default function AdminOverview() {
               <p className="text-[var(--text-muted)] text-sm font-medium mb-1">Gross Booking Value</p>
               <h3 className="text-2xl font-bold">$428,500</h3>
             </div>
-            <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[var(--surface)] text-[var(--text-primary)] flex items-center justify-center">
               <DollarSign size={20} />
             </div>
           </div>

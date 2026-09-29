@@ -1,72 +1,65 @@
+"use client";
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ArrowRight, ChevronLeft } from "lucide-react";
+import { BrutalistButton } from "@/components/ui/brutalist-button";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="min-h-screen bg-[var(--background)] flex flex-col md:flex-row overflow-hidden relative">
-      
+    <div className="min-h-screen bg-[var(--background)] flex flex-col md:flex-row overflow-hidden relative font-sans">
       {/* Back Button */}
       <div className="absolute top-6 left-6 z-50">
-        <Link href="/" className="flex items-center gap-2 text-white md:text-[var(--text-secondary)] md:hover:text-[var(--foreground)] transition-colors bg-black/20 md:bg-transparent backdrop-blur-md md:backdrop-blur-none px-3 py-2 rounded-full text-sm font-medium">
-          <ChevronLeft size={16} />
-          Back to Home
-        </Link>
+        <BrutalistButton
+          href="/"
+          variant="white"
+          containerClassName="w-full lg:w-[180px]"
+          className="h-[56px] px-6 py-0"
+        >
+          <span>Home</span>
+        </BrutalistButton>
       </div>
 
-      {/* Left side - Image / Branding (Hidden on mobile) */}
-      <div className="hidden md:flex flex-col w-1/2 relative bg-[var(--foreground)] text-[var(--background)]">
-        <Image
-          src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=1600&auto=format&fit=crop"
-          alt="Premium luxury car"
-          fill
-          priority
-          sizes="50vw"
-          className="object-cover opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--foreground)] via-transparent to-transparent" />
-        
-        <div className="absolute inset-0 flex flex-col justify-end p-12 lg:p-24 z-10">
-          <Link href="/" className="text-3xl font-bold tracking-tight mb-6">
+      {/* Left side - Yellow Brutalist Block */}
+      <div className="hidden md:flex flex-col w-1/2 relative bg-[var(--icon)] border-r-[8px] border-[var(--border)] p-12 lg:p-24 overflow-hidden">
+        <div className="relative z-10 flex flex-col h-full justify-center">
+          <Link
+            href="/"
+            className="text-4xl font-display tracking-widest text-black mb-8 border-2 border-black inline-block w-fit px-6 py-2 bg-[var(--surface)] shadow-[4px_4px_0px_0px_#000000]"
+          >
             DriveNow
           </Link>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white">
-            The premium standard in mobility.
+          <h2 className="text-[5rem] lg:text-[7rem] mb-8 leading-[0.85] text-black uppercase tracking-tighter">
+            No Limits.
+            <br />
+            Just Drive.
           </h2>
-          <p className="text-lg text-[var(--text-muted)] max-w-md">
-            Join thousands of hosts and renters experiencing a smarter way to get where they're going.
+          <p className="text-xl font-bold text-black max-w-md border-l-8 border-black pl-6 uppercase tracking-wider">
+            Join the most hardcore car rental platform on the planet. Elite
+            fleet. Zero bullshit.
           </p>
         </div>
       </div>
 
       {/* Right side - Form Container */}
-      <div className="w-full md:w-1/2 min-h-screen flex items-center justify-center p-6 sm:p-12 lg:p-24 bg-[var(--background)] relative">
-        {/* Mobile Background Image (Only visible on small screens) */}
-        <div className="md:hidden absolute inset-0 -z-10">
-          <Image
-            src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=1000&auto=format&fit=crop"
-            alt="Premium luxury car"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-[var(--background)]/40" />
-        </div>
-        
-        <div className="w-full max-w-md relative z-10 bg-[var(--surface)] md:bg-transparent p-8 md:p-0 rounded-[var(--radius-xl)] shadow-[var(--shadow-elevated)] md:shadow-none border border-[var(--border-color)] md:border-none">
+      <div className="w-full md:w-1/2 min-h-screen flex items-center justify-center p-4 sm:p-8 lg:p-12 bg-[var(--background)] relative animate-grid bg-[size:40px_40px] bg-[image:linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)]">
+        <div className="w-full max-w-md relative z-10 card-brutalist">
           {/* Mobile Logo */}
-          <div className="md:hidden mb-8 text-center">
-            <Link href="/" className="text-2xl font-bold tracking-tight">
-              DriveNow
+          <div className="md:hidden mb-12 text-center">
+            <Link
+              href="/"
+              className="text-4xl font-display uppercase tracking-widest text-black bg-[var(--icon)] border-2 border-[var(--border)] inline-block px-6 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+            >
+              DRIVENOW
             </Link>
           </div>
-          
+
           {children}
         </div>
       </div>
-      
     </div>
   );
 }

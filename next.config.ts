@@ -11,8 +11,13 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "pngimg.com",
+      },
     ],
   },
+  allowedDevOrigins: ['reservation-couples-keys-examples.trycloudflare.com'], 
 };
 
 export default nextConfig;

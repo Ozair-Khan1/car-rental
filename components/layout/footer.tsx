@@ -2,84 +2,130 @@
 
 import React from "react";
 import Link from "next/link";
-import { Globe, Mail, MessageCircle, Phone } from "lucide-react";
+import { Globe } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Reveal } from "@/components/ui/reveal";
 
 export function Footer() {
   const pathname = usePathname();
 
   // Hide footer on auth routes
-  if (pathname === '/login' || pathname === '/signup') {
+  if (pathname === "/login" || pathname === "/signup") {
     return null;
   }
 
   return (
-    <footer className="bg-[var(--surface-elevated)] border-t border-[var(--border-color)] pt-16 pb-8 text-[var(--foreground)]">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
-          <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-block text-2xl font-bold tracking-tight mb-6">
-              DriveNow
-            </Link>
-            <p className="text-[var(--text-secondary)] text-sm max-w-sm mb-6 leading-relaxed">
-              Premium vehicles, flexible rentals, and a smarter way to get where you're going. Experience the future of mobility today.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors"><MessageCircle size={20} /></a>
-              <a href="#" className="text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors"><Globe size={20} /></a>
-              <a href="#" className="text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors"><Mail size={20} /></a>
-              <a href="#" className="text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors"><Phone size={20} /></a>
-            </div>
-          </div>
+    <footer className="bg-[var(--background)] border-t border-[var(--border)] pt-24 pb-12 text-[var(--text-primary)]">
+      <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
 
-          <div>
-            <h4 className="font-semibold mb-6">Company</h4>
-            <ul className="flex flex-col gap-3 text-sm text-[var(--text-secondary)]">
-              <li><Link href="/about" className="hover:text-[var(--foreground)] transition-colors">About</Link></li>
-              <li><Link href="/careers" className="hover:text-[var(--foreground)] transition-colors">Careers</Link></li>
-              <li><Link href="/press" className="hover:text-[var(--foreground)] transition-colors">Press</Link></li>
-              <li><Link href="/contact" className="hover:text-[var(--foreground)] transition-colors">Contact</Link></li>
+        {/* 4 Clean Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24">
+          <Reveal delay={0}>
+            <h4 className="text-[13px] font-semibold mb-6 text-black/50 tracking-wider">
+              Company
+            </h4>
+            <ul className="flex flex-col gap-4 text-[14px] text-black/65">
+              <li>
+                <Link href="/about" className="link-underline">
+                  About us
+                </Link>
+              </li>
+              <li>
+                <Link href="/careers" className="link-underline">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="link-underline">
+                  Contact
+                </Link>
+              </li>
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
-            <h4 className="font-semibold mb-6">Rentals</h4>
-            <ul className="flex flex-col gap-3 text-sm text-[var(--text-secondary)]">
-              <li><Link href="/cars" className="hover:text-[var(--foreground)] transition-colors">Browse Cars</Link></li>
-              <li><Link href="/locations" className="hover:text-[var(--foreground)] transition-colors">Locations</Link></li>
-              <li><Link href="/deals" className="hover:text-[var(--foreground)] transition-colors">Deals</Link></li>
-              <li><Link href="/long-term" className="hover:text-[var(--foreground)] transition-colors">Long-Term Rentals</Link></li>
+          <Reveal delay={60}>
+            <h4 className="text-[13px] font-semibold mb-6 text-black/50 tracking-wider">
+              Rentals
+            </h4>
+            <ul className="flex flex-col gap-4 text-[14px] text-black/65">
+              <li>
+                <Link href="/cars" className="link-underline">
+                  Cars
+                </Link>
+              </li>
+              <li>
+                <Link href="/locations" className="link-underline">
+                  Locations
+                </Link>
+              </li>
+              <li>
+                <Link href="/deals" className="link-underline">
+                  Deals
+                </Link>
+              </li>
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
-            <h4 className="font-semibold mb-6">Support</h4>
-            <ul className="flex flex-col gap-3 text-sm text-[var(--text-secondary)]">
-              <li><Link href="/help" className="hover:text-[var(--foreground)] transition-colors">Help Center</Link></li>
-              <li><Link href="/cancellation" className="hover:text-[var(--foreground)] transition-colors">Cancellation</Link></li>
-              <li><Link href="/insurance" className="hover:text-[var(--foreground)] transition-colors">Insurance</Link></li>
-              <li><Link href="/contact-support" className="hover:text-[var(--foreground)] transition-colors">Contact Support</Link></li>
+          <Reveal delay={120}>
+            <h4 className="text-[13px] font-semibold mb-6 text-black/50 tracking-wider">
+              Support
+            </h4>
+            <ul className="flex flex-col gap-4 text-[14px] text-black/65">
+              <li>
+                <Link href="/help" className="link-underline">
+                  Help center
+                </Link>
+              </li>
+              <li>
+                <Link href="/cancellation" className="link-underline">
+                  Cancellation
+                </Link>
+              </li>
+              <li>
+                <Link href="/insurance" className="link-underline">
+                  Insurance
+                </Link>
+              </li>
             </ul>
-          </div>
+          </Reveal>
+
+          <Reveal delay={180}>
+            <h4 className="text-[13px] font-semibold mb-6 text-black/50 tracking-wider">
+              Legal
+            </h4>
+            <ul className="flex flex-col gap-4 text-[14px] text-black/65">
+              <li>
+                <Link href="/legal/terms" className="link-underline">
+                  Terms
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/privacy" className="link-underline">
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/cookies" className="link-underline">
+                  Cookies
+                </Link>
+              </li>
+            </ul>
+          </Reveal>
         </div>
 
-        <div className="pt-8 border-t border-[var(--border-color)] flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--text-muted)]">
-          <div className="flex items-center gap-6">
-            <span>&copy; {new Date().getFullYear()} DriveNow. All rights reserved.</span>
-            <div className="hidden md:flex gap-4">
-              <Link href="/legal/terms" className="hover:text-[var(--foreground)] transition-colors">Terms</Link>
-              <Link href="/legal/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy</Link>
-              <Link href="/legal/cookies" className="hover:text-[var(--foreground)] transition-colors">Cookies</Link>
-            </div>
+        {/* Bottom row: Copyright & Language */}
+        <div className="pt-8 border-t border-[var(--border)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-[13px] text-black/50">
+          <div>
+            &copy; {new Date().getFullYear()} DriveNow. All rights reserved.
           </div>
-          
-          <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 hover:text-[var(--foreground)] transition-colors">
-              <Globe size={16} />
-              <span>English (US)</span>
+
+          <div className="flex items-center gap-6">
+            <button className="flex items-center gap-2 hover:text-[var(--text-primary)] transition-colors">
+              <Globe size={14} className="text-[var(--icon)]" />
+              <span className="font-medium">English (US)</span>
             </button>
-            <button className="hover:text-[var(--foreground)] transition-colors">
-              <span>$ USD</span>
+            <button className="hover:text-[var(--text-primary)] transition-colors font-medium">
+              $ USD
             </button>
           </div>
         </div>

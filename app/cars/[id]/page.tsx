@@ -7,13 +7,12 @@ import { mockVehicles, mockOwners, mockLocations } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 
 interface CarDetailsProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
-export default function CarDetailsPage({ params }: CarDetailsProps) {
-  // In Next.js 15, params is usually a Promise, but for simplicity in this mock, we assume synchronous access if passed directly or we can await it if we change to async component.
-  // Actually, Next.js App Router Server Components can be async. Let's keep it simple for the UI prototype.
-  const vehicle = mockVehicles.find(v => v.id === params.id);
+export default async function CarDetailsPage({ params }: CarDetailsProps) {
+  const resolvedParams = await params;
+  const vehicle = mockVehicles.find(v => v.id === resolvedParams.id);
 
   if (!vehicle) {
     notFound();

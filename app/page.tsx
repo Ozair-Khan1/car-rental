@@ -1,406 +1,365 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SearchPanel } from "@/components/domain/search-panel";
-import { VehicleCard } from "@/components/domain/vehicle-card";
-import { mockVehicles, mockLocations } from "@/lib/mock-data";
-import { Button } from "@/components/ui/button";
+import { mockVehicles } from "@/lib/mock-data";
 import {
-  ShieldCheck,
-  Map,
-  Clock,
-  CreditCard,
-  Star,
-  ChevronRight,
+  ArrowLeft,
+  ArrowRight,
+  Plus,
+  Minus,
+  ArrowRight as ArrowIcon,
 } from "lucide-react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { Reveal } from "@/components/ui/reveal";
+import { BrutalistButton } from "@/components/ui/brutalist-button";
 
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroTextRef = useRef<HTMLDivElement>(null);
-  const heroImageRef = useRef<HTMLDivElement>(null);
-  const featuredRef = useRef<HTMLDivElement>(null);
-  const stepsLineRef = useRef<HTMLDivElement>(null);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
-  useEffect(() => {
-    // --- Hero Animation Sequence ---
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
+  const testimonials = [
+    {
+      quote:
+        "The easiest car rental process I've ever used. The vehicle was exactly as described.",
+      name: "Michael T., San Francisco",
+    },
+    {
+      quote:
+        "No counter queues. I landed, walked to the car, and drove away. Incredibly fast.",
+      name: "Sarah L., Los Angeles",
+    },
+    {
+      quote:
+        "The pricing is completely transparent. I appreciate knowing exactly what I'll pay.",
+      name: "David W., Miami",
+    },
+  ];
 
-      // Ensure elements start hidden/transformed to avoid FOUC
-      gsap.set(heroTextRef.current?.children || [], { y: 30, opacity: 0 });
-      gsap.set(heroImageRef.current, { scale: 1.05, opacity: 0 });
-
-      tl.to(heroTextRef.current?.children || [], {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.15,
-        ease: "expo.out",
-        delay: 0.2,
-      }).to(
-        heroImageRef.current,
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power3.out",
-        },
-        "-=0.8",
-      );
-
-      // --- Scroll Animations ---
-
-      // Featured Cars Stagger
-      if (featuredRef.current) {
-        gsap.fromTo(
-          featuredRef.current.querySelectorAll(".vehicle-card-wrapper"),
-          { y: 50, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: featuredRef.current,
-              start: "top 80%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      // How It Works Connecting Line
-      if (stepsLineRef.current) {
-        gsap.fromTo(
-          stepsLineRef.current,
-          { height: "0%" },
-          {
-            height: "100%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: stepsLineRef.current.parentElement,
-              start: "top 60%",
-              end: "bottom 60%",
-              scrub: true,
-            },
-          },
-        );
-      }
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  const featuredVehicles = mockVehicles.slice(0, 3);
+  const faqs = [
+    { q: "Who can rent a car?", a: "[Answer details]" },
+    { q: "What do I need to book?", a: "[Answer details]" },
+    { q: "What's the security deposit?", a: "[Answer details]" },
+    { q: "How does cancellation work?", a: "[Answer details]" },
+    { q: "What if there's an accident?", a: "[Answer details]" },
+    { q: "What's the fuel policy?", a: "[Answer details]" },
+  ];
 
   return (
-    <div className="flex flex-col w-full overflow-hidden">
-      {/* 10. HERO SECTION */}
-      <section
-        ref={heroRef}
-        className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex flex-col justify-center"
-      >
-        {/* Background gradient/texture (subtle) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] to-[var(--surface-elevated)] -z-10" />
+    <div className="flex flex-col w-full selection:bg-[var(--text-primary)] selection:text-[var(--background)] overflow-x-hidden relative">
+      {/* Global Grid Background */}
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#0000001a_1px,transparent_1px),linear-gradient(to_bottom,#0000001a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
 
-        <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
-          {/* Hero Text */}
-          <div
-            ref={heroTextRef}
-            className="text-center max-w-4xl mx-auto mb-10"
-          >
-            <h1 className="text-display mb-6 tracking-tight text-[var(--foreground)]">
-              Your journey starts with the right car.
-            </h1>
-            <p className="text-h3 text-[var(--text-secondary)] font-normal max-w-2xl mx-auto">
-              Premium vehicles, flexible rentals, and a smarter way to get where
-              you're going.
-            </p>
-          </div>
-
-          {/* Hero Image */}
-          <div
-            ref={heroImageRef}
-            className="relative w-full max-w-5xl aspect-[21/9] md:aspect-[24/9] mx-auto rounded-[var(--radius-xl)] overflow-hidden shadow-2xl mb-[-60px] md:mb-[-80px] z-10 bg-[var(--surface-elevated)]"
-          >
-            <Image
-              src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2400&auto=format&fit=crop"
-              alt="Premium driving experience"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-            {/* Dark overlay at bottom so search panel pops */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </div>
-
-          {/* Search Panel Component */}
-          <SearchPanel />
-        </div>
-      </section>
-
-      {/* 12. POPULAR LOCATIONS */}
-      <section className="py-24 bg-[var(--background)]">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <h2 className="text-h2 mb-2">Popular Destinations</h2>
-              <p className="text-[var(--text-secondary)]">
-                Find premium vehicles in top cities worldwide.
-              </p>
+      {/* HERO SECTION */}
+      <section className="pt-32 lg:pt-48 pb-24 md:pb-32 min-h-[75vh] relative flex flex-col justify-center">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between mb-8 relative">
+            <div className="max-w-2xl lg:w-[60%] relative z-20">
+              <h1 className="text-display mb-6 text-[var(--text-primary)] flex flex-col">
+                <Reveal delay={0} className="inline-block">
+                  Rent a car
+                </Reveal>
+                <Reveal delay={80} className="inline-block">
+                  in minutes.
+                </Reveal>
+              </h1>
+              <Reveal delay={160}>
+                <p className="text-body max-w-md">
+                  Pick up a car in [City], with prices from [Price] and free
+                  cancellation up to 24h before.
+                </p>
+              </Reveal>
             </div>
-            <Button variant="ghost" className="hidden md:flex gap-2">
-              View All Locations <ChevronRight size={16} />
-            </Button>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {mockLocations.map((location) => (
-              <Link
-                key={location.id}
-                href={`/locations/${location.id}`}
-                className="group relative aspect-[4/5] md:aspect-[4/3] rounded-[var(--radius-lg)] overflow-hidden shadow-sm"
+            {/* Cutout Car Placeholder */}
+            <div className="hidden lg:block absolute right-[-65%] top-1/2 -translate-y-1/2 w-[75%] h-[600px] z-10 pointer-events-none">
+              <Reveal
+                direction="right"
+                distance={40}
+                delay={0}
+                className="w-full h-full relative z-10"
               >
+                {/* <!-- [replace: hero-car.png] --> */}
                 <Image
-                  src={location.image}
-                  alt={location.city}
+                  src="/car-images/BlackCar.png"
+                  alt="Sports car cutout"
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 75vw"
+                  priority
+                  className="object-contain object-right scale-[1.2] origin-right"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-6 w-full text-white">
-                  <h3 className="text-xl font-bold mb-1">{location.city}</h3>
-                  <p className="text-white/80 text-sm flex items-center gap-2">
-                    <Map size={14} /> {location.country}
+              </Reveal>
+              {/* Separate contact shadow fading in slightly after */}
+              <Reveal
+                delay={400}
+                direction="none"
+                className="absolute bottom-[5%] left-1/4 right-[-10%] h-[30px] bg-black/50 blur-2xl rounded-[100%] z-10"
+              ></Reveal>
+            </div>
+          </div>
+
+          <Reveal delay={240} className="relative z-20">
+            <SearchPanel />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-32">
+            <div className="lg:w-1/3">
+              <Reveal>
+                <h2 className="text-h2 mb-6">Drive on your terms.</h2>
+                <p className="text-body mb-8">
+                  Insurance included. No counter queues. Cancel free up to [24h]
+                  before pick-up.
+                </p>
+              </Reveal>
+            </div>
+
+            <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-12">
+              <Reveal delay={0}>
+                <h3 className="text-h3 mb-3">Price</h3>
+                <p className="text-body">[what's included in the daily rate]</p>
+              </Reveal>
+              <Reveal delay={60}>
+                <h3 className="text-h3 mb-3">Insurance</h3>
+                <p className="text-body">[coverage and deductible]</p>
+              </Reveal>
+              <Reveal delay={120}>
+                <h3 className="text-h3 mb-3">Cancellation</h3>
+                <p className="text-body">[policy]</p>
+              </Reveal>
+              <Reveal delay={180}>
+                <h3 className="text-h3 mb-3">Pick-up</h3>
+                <p className="text-body">[locations and how it works]</p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED FLEET */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <Reveal>
+            <div className="flex flex-col md:flex-row items-baseline justify-between mb-16">
+              <h2 className="text-h2">Available Fleet</h2>
+              <BrutalistButton href="/cars" containerClassName="mt-4 md:mt-0">
+                <span>View all vehicles</span>
+                <ArrowIcon size={20} />
+              </BrutalistButton>
+            </div>
+          </Reveal>
+
+          <div className="flex flex-col gap-6 mt-8">
+            {mockVehicles.slice(0, 4).map((car, idx) => (
+              <Reveal key={car.id} delay={Math.min(idx, 6) * 60}>
+                <div className="card-brutalist group flex flex-col md:flex-row p-0 overflow-hidden items-stretch gap-0">
+                  <div className="w-full md:w-[350px] h-[250px] md:h-auto relative shrink-0 border-b-2 md:border-b-0 md:border-r-2 border-[var(--border)]">
+                    <Image
+                      src={car.images[0] || ""}
+                      alt={`${car.brand} ${car.model}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 350px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="flex-1 w-full flex flex-col justify-between p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                      <div>
+                        <p className="text-small uppercase tracking-widest text-[var(--text-tertiary)] mb-1">
+                          {car.category}
+                        </p>
+                        <h3 className="text-h3 mb-4">
+                          {car.brand} {car.model}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-4 text-small text-[var(--text-secondary)]">
+                          <span>{car.seats} Seats</span>
+                          <span className="w-1 h-1 bg-[var(--border)] rounded-full" />
+                          <span>{car.transmission}</span>
+                          <span className="w-1 h-1 bg-[var(--border)] rounded-full" />
+                          <span>{car.fuel}</span>
+                        </div>
+                      </div>
+
+                      <div className="text-left md:text-right">
+                        <span className="text-h3 block">${car.dailyPrice}</span>
+                        <span className="text-small block mt-1">per day</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 flex justify-end">
+                      <BrutalistButton href={`/cars/${car.id}`}>
+                        <span>Book vehicle</span>
+                        <ArrowIcon size={20} />
+                      </BrutalistButton>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+            <div className="lg:w-1/3">
+              <Reveal>
+                <h2 className="text-h2">The process</h2>
+              </Reveal>
+            </div>
+            <div className="lg:w-2/3">
+              <div className="flex flex-col gap-8">
+                <Reveal delay={0}>
+                  <div className="card-brutalist flex gap-8 items-start">
+                    <span className="text-h3 text-[var(--icon)]">01</span>
+                    <div>
+                      <h3 className="text-h3 mb-3">Reserve</h3>
+                      <p className="text-body max-w-lg text-[var(--text-primary)]">
+                        Select your dates, choose a location, and pick a vehicle
+                        from our collection.
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+                <Reveal delay={60}>
+                  <div className="card-brutalist flex gap-8 items-start">
+                    <span className="text-h3 text-[var(--icon)]">02</span>
+                    <div>
+                      <h3 className="text-h3 mb-3">Verify</h3>
+                      <p className="text-body max-w-lg text-[var(--text-primary)]">
+                        Upload your driver's license and verify your identity
+                        securely within minutes.
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+                <Reveal delay={120}>
+                  <div className="card-brutalist flex gap-8 items-start">
+                    <span className="text-h3 text-[var(--icon)]">03</span>
+                    <div>
+                      <h3 className="text-h3 mb-3">Drive</h3>
+                      <p className="text-body max-w-lg text-[var(--text-primary)]">
+                        Locate your vehicle using the app, open the doors via
+                        Bluetooth, and begin your trip.
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-24 md:py-32 border-y-2 border-[var(--border)] relative z-10">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
+          <Reveal>
+            <div className="flex flex-col md:flex-row bg-[var(--surface)] border-[2px] border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+              {/* Giant Quote Column */}
+              <div className="hidden md:flex md:w-1/4 bg-[var(--icon)] border-r-[2px] border-[var(--border)] items-start justify-center pt-12">
+                <span className="text-[180px] leading-none text-black font-black font-serif -mt-8">
+                  "
+                </span>
+              </div>
+
+              {/* Content Column */}
+              <div className="p-8 md:p-16 flex flex-col justify-between gap-12 w-full md:w-3/4">
+                <h2 className="text-h2 text-[var(--text-primary)] leading-tight uppercase">
+                  {testimonials[activeTestimonial].quote}
+                </h2>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-8 border-t-2 border-[var(--border)] pt-8 mt-4">
+                  <p className="text-h3 font-bold text-[var(--text-primary)] uppercase tracking-widest">
+                    {testimonials[activeTestimonial].name}
                   </p>
+                  <div className="flex gap-4 shrink-0">
+                    <BrutalistButton
+                      variant="icon"
+                      onClick={() =>
+                        setActiveTestimonial((prev) =>
+                          prev === 0 ? testimonials.length - 1 : prev - 1,
+                        )
+                      }
+                      aria-label="Previous testimonial"
+                    >
+                      <ArrowLeft size={24} />
+                    </BrutalistButton>
+                    <BrutalistButton
+                      variant="icon"
+                      onClick={() =>
+                        setActiveTestimonial((prev) =>
+                          prev === testimonials.length - 1 ? 0 : prev + 1,
+                        )
+                      }
+                      aria-label="Next testimonial"
+                    >
+                      <ArrowRight size={24} />
+                    </BrutalistButton>
+                  </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 13. FEATURED CARS */}
-      <section className="py-24 bg-[var(--surface-elevated)]">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-h2 mb-4">Find your perfect drive.</h2>
-            <p className="text-[var(--text-secondary)] text-lg">
-              From efficient city cars to premium SUVs, choose the vehicle that
-              fits your journey.
-            </p>
-
-            {/* Quick Category Filters (Visual only for homepage) */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
-              {["All", "Economy", "Sedan", "SUV", "Luxury", "Electric"].map(
-                (cat, i) => (
+      {/* FAQ */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <Reveal>
+            <h2 className="text-h2 mb-12">Questions?</h2>
+          </Reveal>
+          <div className="flex flex-col max-w-[900px]">
+            {faqs.map((faq, idx) => (
+              <Reveal key={idx} delay={Math.min(idx, 6) * 60}>
+                <div className="border-b-2 border-[var(--border)]">
                   <button
-                    key={cat}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${i === 0 ? "bg-[var(--foreground)] text-[var(--background)]" : "bg-[var(--background)] text-[var(--text-secondary)] hover:bg-[var(--border-color)]"}`}
+                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                    className="w-full py-8 flex items-center justify-between text-left group"
                   >
-                    {cat}
+                    <span className="text-h3 group-hover:text-[var(--icon)] transition-colors">
+                      {faq.q}
+                    </span>
+                    {activeFaq === idx ? (
+                      <Minus
+                        size={24}
+                        className="text-[var(--text-primary)] shrink-0"
+                      />
+                    ) : (
+                      <Plus
+                        size={24}
+                        className="text-[var(--text-primary)] shrink-0"
+                      />
+                    )}
                   </button>
-                ),
-              )}
-            </div>
-          </div>
-
-          <div
-            ref={featuredRef}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {featuredVehicles.map((vehicle) => (
-              <div key={vehicle.id} className="vehicle-card-wrapper h-full">
-                <VehicleCard vehicle={vehicle} featured />
-              </div>
+                  {activeFaq === idx && (
+                    <div className="pb-8 text-body max-w-2xl">{faq.a}</div>
+                  )}
+                </div>
+              </Reveal>
             ))}
           </div>
-
-          <div className="mt-12 text-center">
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/cars">View All Vehicles</Link>
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* 15. HOW IT WORKS */}
-      <section className="py-24 bg-[var(--background)] relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-h2 mb-4">How it works</h2>
-            <p className="text-[var(--text-secondary)] text-lg">
-              Rent a premium vehicle in three simple steps.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto relative">
-            {/* Desktop Connecting Line */}
-            <div className="hidden md:block absolute top-[40px] left-0 w-full h-[2px] bg-[var(--border-color)] -z-10" />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative">
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-[var(--surface-elevated)] rounded-full border border-[var(--border-color)] flex items-center justify-center text-2xl font-bold text-[var(--accent)] mb-6 shadow-sm z-10 relative">
-                  01
-                </div>
-                <h3 className="text-xl font-bold mb-3">Choose your car</h3>
-                <p className="text-[var(--text-secondary)]">
-                  Browse our curated selection of premium vehicles and find your
-                  perfect match.
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-[var(--surface-elevated)] rounded-full border border-[var(--border-color)] flex items-center justify-center text-2xl font-bold text-[var(--accent)] mb-6 shadow-sm z-10 relative">
-                  02
-                </div>
-                <h3 className="text-xl font-bold mb-3">Book your trip</h3>
-                <p className="text-[var(--text-secondary)]">
-                  Select dates, pickup location, protection plans, and optional
-                  extras.
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-[var(--accent)] rounded-full flex items-center justify-center text-2xl font-bold text-white mb-6 shadow-md z-10 relative">
-                  03
-                </div>
-                <h3 className="text-xl font-bold mb-3">Hit the road</h3>
-                <p className="text-[var(--text-secondary)]">
-                  Pick up your vehicle at our location or use our contactless
-                  digital key access.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 16. WHY DRIVENOW */}
-      <section className="py-24 bg-foreground text-background">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-h2 mb-6 text-background">
-                The premium mobility standard.
-              </h2>
-              <p className="text-text-muted text-lg mb-10 max-w-lg">
-                We've rebuilt the car rental experience from the ground up to be
-                transparent, flexible, and completely tailored to your journey.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-white/10 p-2 rounded-lg h-fit text-background">
-                    <ShieldCheck size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-background mb-2">
-                      Transparent Pricing
-                    </h4>
-                    <p className="text-text-muted text-sm">
-                      No surprise charges. What you see is exactly what you pay.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-white/10 p-2 rounded-lg h-fit text-background">
-                    <Clock size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-background mb-2">
-                      Flexible Rentals
-                    </h4>
-                    <p className="text-text-muted text-sm">
-                      Change or cancel selected bookings easily up to 24h
-                      before.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-white/10 p-2 rounded-lg h-fit text-background">
-                    <Map size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-background mb-2">
-                      Nationwide Locations
-                    </h4>
-                    <p className="text-text-muted text-sm">
-                      Convenient pickup locations at major airports and city
-                      centers.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-white/10 p-2 rounded-lg h-fit text-background">
-                    <CreditCard size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-background mb-2">
-                      Contactless Access
-                    </h4>
-                    <p className="text-text-muted text-sm">
-                      Skip the counter. Unlock your reserved vehicle with your
-                      phone.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative aspect-[4/5] rounded-[var(--radius-xl)] overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1541443131876-44b03de101c5?q=80&w=1600&auto=format&fit=crop"
-                alt="Premium service"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 19. FINAL CTA */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2400&auto=format&fit=crop"
-            alt="Ready for the road"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-
-        <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
-          <h2 className="text-h1 text-white mb-6">Ready for the road?</h2>
-          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Find your next car and start your journey today. Experience the
-            standard in premium car rentals.
-          </p>
-          <Button
-            size="lg"
-            variant="primary"
-            asChild
-            className="px-10 py-6 text-lg h-auto shadow-xl"
-          >
-            <Link href="/cars">Browse Cars</Link>
-          </Button>
+      {/* FINAL CTA */}
+      <section className="py-32 md:py-48">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <Reveal>
+            <h2 className="text-display mb-10 max-w-3xl">Find a car.</h2>
+            <BrutalistButton href="/cars">
+              <span>Browse Vehicles</span>
+              <ArrowIcon size={20} />
+            </BrutalistButton>
+          </Reveal>
         </div>
       </section>
     </div>
