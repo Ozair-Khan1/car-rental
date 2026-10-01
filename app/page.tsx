@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { SearchPanel } from "@/components/domain/search-panel";
+import { LocationsZigzag } from "@/components/domain/locations-zigzag";
 import { mockVehicles } from "@/lib/mock-data";
 import {
   ArrowLeft,
@@ -15,9 +19,73 @@ import {
 import { Reveal } from "@/components/ui/reveal";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
 export default function Home() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      // 1. Initial Load Animation
+      const tl = gsap.timeline();
+
+      // Text animations
+      tl.fromTo(
+        ".hero-title-1 > span, .hero-title-2 > span",
+        { y: 100 },
+        { y: 0, duration: 0.8, ease: "power4.out", stagger: 0.1 },
+      )
+        .fromTo(
+          ".hero-subtitle p",
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "-=0.4",
+        )
+        .fromTo(
+          ".hero-search",
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "-=0.4",
+        );
+
+      // Car entering from right (100vw off-screen right)
+      tl.fromTo(
+        ".hero-car",
+        { x: "100vw" },
+        { x: 0, duration: 1.5, ease: "power3.out" },
+        0, // start at the very beginning of timeline
+      );
+
+      // 2. ScrollTrigger Animation (Move car off-screen left on scroll down)
+      gsap.to(".hero-car-container", {
+        x: "100vw",
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".text-content", {
+        y: -100,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    },
+    { scope: heroRef },
+  );
 
   const testimonials = [
     {
@@ -52,61 +120,68 @@ export default function Home() {
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#0000001a_1px,transparent_1px),linear-gradient(to_bottom,#0000001a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
 
       {/* HERO SECTION */}
-      <section className="pt-32 lg:pt-48 pb-24 md:pb-32 min-h-[75vh] relative flex flex-col justify-center">
+      <section
+        ref={heroRef}
+        className="pt-24 lg:pt-32 pb-16 md:pb-24 min-h-[75vh] relative flex flex-col justify-center hero-section overflow-hidden"
+      >
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between mb-8 relative">
-            <div className="max-w-2xl lg:w-[60%] relative z-20">
+            <div className="max-w-2xl lg:w-[60%] relative z-20 text-content">
               <h1 className="text-display mb-6 text-[var(--text-primary)] flex flex-col">
-                <Reveal delay={0} className="inline-block">
-                  Rent a car
-                </Reveal>
-                <Reveal delay={80} className="inline-block">
-                  in minutes.
-                </Reveal>
+                <span className="hero-title-1 block overflow-hidden">
+                  <span className="block">Rent a car</span>
+                </span>
+                <span className="hero-title-2 block overflow-hidden">
+                  <span className="block">in minutes.</span>
+                </span>
               </h1>
-              <Reveal delay={160}>
+              <div className="hero-subtitle overflow-hidden">
                 <p className="text-body max-w-md">
                   Pick up a car in [City], with prices from [Price] and free
                   cancellation up to 24h before.
                 </p>
-              </Reveal>
+              </div>
             </div>
 
-            {/* Cutout Car Placeholder */}
-            <div className="hidden lg:block absolute right-[-65%] top-1/2 -translate-y-1/2 w-[75%] h-[600px] z-10 pointer-events-none">
-              <Reveal
-                direction="right"
-                distance={40}
-                delay={0}
-                className="w-full h-full relative z-10"
-              >
-                {/* <!-- [replace: hero-car.png] --> */}
+            {/* Cutout Car */}
+            <div className="hidden lg:block absolute right-[-55%] top-1/2 -translate-y-1/2 w-[75%] h-[600px] z-10 pointer-events-none hero-car-container">
+              <div className="w-full h-full relative z-10 hero-car">
                 <Image
                   src="/car-images/BlackCar.png"
                   alt="Sports car cutout"
                   fill
                   sizes="(max-width: 1024px) 100vw, 75vw"
                   priority
-                  className="object-contain object-right scale-[1.2] origin-right"
+                  className="object-contain object-right scale-[1.1] origin-right drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)]"
                 />
-              </Reveal>
-              {/* Separate contact shadow fading in slightly after */}
-              <Reveal
-                delay={400}
-                direction="none"
-                className="absolute bottom-[5%] left-1/4 right-[-10%] h-[30px] bg-black/50 blur-2xl rounded-[100%] z-10"
-              ></Reveal>
+              </div>
             </div>
           </div>
 
-          <Reveal delay={240} className="relative z-20">
+          <div className="relative z-20 hero-search opacity-0">
             <SearchPanel />
-          </Reveal>
+          </div>
         </div>
       </section>
 
+      {/* MARQUEE 1 */}
+      <div className="w-full bg-[var(--btn-primary-bg)] shadow-[4px_4px_0px_0px_var(--shadow-color)] border-y-2 border-[var(--border)] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
+        <div className="animate-marquee inline-flex w-max">
+          {[...Array(4)].map((_, i) => (
+            <span
+              key={i}
+              className="text-black font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
+            >
+              FREE CANCELLATION <span className="mx-8">★</span> NO HIDDEN FEES{" "}
+              <span className="mx-8">★</span> 24/7 SUPPORT{" "}
+              <span className="mx-8">★</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* WHY CHOOSE US */}
-      <section className="py-24 md:py-32">
+      <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-32">
             <div className="lg:w-1/3">
@@ -141,8 +216,56 @@ export default function Home() {
         </div>
       </section>
 
+      {/* STATS ROW */}
+      <section className="pb-16 md:pb-24">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <Reveal delay={0}>
+              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
+                <span className="text-display text-[var(--icon)] leading-none mb-2">
+                  [10+]
+                </span>
+                <span className="text-body font-bold uppercase tracking-widest">
+                  Cars
+                </span>
+              </div>
+            </Reveal>
+            <Reveal delay={60}>
+              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
+                <span className="text-display text-[var(--icon)] leading-none mb-2">
+                  [24/7]
+                </span>
+                <span className="text-body font-bold uppercase tracking-widest">
+                  Support
+                </span>
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
+                <span className="text-display text-[var(--icon)] leading-none mb-2">
+                  [00]
+                </span>
+                <span className="text-body font-bold uppercase tracking-widest">
+                  Cities
+                </span>
+              </div>
+            </Reveal>
+            <Reveal delay={180}>
+              <div className="card-brutalist flex flex-col items-center justify-center text-center p-8 h-full">
+                <span className="text-display text-[var(--icon)] leading-none mb-2">
+                  [00]
+                </span>
+                <span className="text-body font-bold uppercase tracking-widest">
+                  Happy Renters
+                </span>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* FEATURED FLEET */}
-      <section className="py-24 md:py-32">
+      <section className="py-16 md:py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
           <Reveal>
             <div className="flex flex-col md:flex-row items-baseline justify-between mb-16">
@@ -259,8 +382,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PICK-UP LOCATIONS */}
+      <LocationsZigzag />
+
       {/* TESTIMONIALS */}
-      <section className="py-24 md:py-32 border-y-2 border-[var(--border)] relative z-10">
+      <section className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
           <Reveal>
             <div className="flex flex-col md:flex-row bg-[var(--surface)] border-[2px] border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)]">
@@ -312,53 +438,95 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 md:py-32">
+      <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
-          <Reveal>
-            <h2 className="text-h2 mb-12">Questions?</h2>
-          </Reveal>
-          <div className="flex flex-col max-w-[900px]">
-            {faqs.map((faq, idx) => (
-              <Reveal key={idx} delay={Math.min(idx, 6) * 60}>
-                <div className="border-b-2 border-[var(--border)]">
-                  <button
-                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                    className="w-full py-8 flex items-center justify-between text-left group"
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+            <div className="lg:w-1/3">
+              <div className="sticky top-32">
+                <Reveal>
+                  <h2 className="text-h2 mb-6 pt-[0.1em]">Questions?</h2>
+                  <p className="text-body max-w-sm">
+                    Everything you need to know about booking and hitting the
+                    road.
+                  </p>
+                </Reveal>
+              </div>
+            </div>
+            <div className="lg:w-2/3 flex flex-col">
+              {faqs.map((faq, idx) => (
+                <Reveal key={idx} delay={Math.min(idx, 6) * 60}>
+                  <div
+                    className={`border-b-2 border-[var(--border)] transition-all duration-200 ${activeFaq === idx ? "border-l-4 border-l-[var(--icon)] pl-6 bg-[var(--surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] mb-4 -ml-[2px]" : "pl-0 bg-transparent"}`}
                   >
-                    <span className="text-h3 group-hover:text-[var(--icon)] transition-colors">
-                      {faq.q}
-                    </span>
-                    {activeFaq === idx ? (
-                      <Minus
-                        size={24}
-                        className="text-[var(--text-primary)] shrink-0"
-                      />
-                    ) : (
-                      <Plus
-                        size={24}
-                        className="text-[var(--text-primary)] shrink-0"
-                      />
+                    <button
+                      onClick={() =>
+                        setActiveFaq(activeFaq === idx ? null : idx)
+                      }
+                      className="w-full py-8 flex items-center justify-between text-left group px-4"
+                    >
+                      <span className="text-h3 group-hover:text-[var(--icon)] transition-colors">
+                        {faq.q}
+                      </span>
+                      {activeFaq === idx ? (
+                        <Minus
+                          size={24}
+                          className="text-[var(--text-primary)] shrink-0"
+                        />
+                      ) : (
+                        <Plus
+                          size={24}
+                          className="text-[var(--text-primary)] shrink-0"
+                        />
+                      )}
+                    </button>
+                    {activeFaq === idx && (
+                      <div className="pb-8 px-4 text-body max-w-2xl">
+                        {faq.a}
+                      </div>
                     )}
-                  </button>
-                  {activeFaq === idx && (
-                    <div className="pb-8 text-body max-w-2xl">{faq.a}</div>
-                  )}
-                </div>
-              </Reveal>
-            ))}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
+      {/* MARQUEE 2 */}
+      <div className="w-full bg-[#111] border-y-2 border-[#111] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
+        <div className="animate-marquee inline-flex w-max [animation-direction:reverse]">
+          {[...Array(4)].map((_, i) => (
+            <span
+              key={i}
+              className="text-[#F4F3ED] font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
+            >
+              FREE CANCELLATION{" "}
+              <span className="mx-8 text-[var(--icon)]">★</span> NO HIDDEN FEES{" "}
+              <span className="mx-8 text-[var(--icon)]">★</span> INSURANCE
+              INCLUDED <span className="mx-8 text-[var(--icon)]">★</span>{" "}
+              [LOCATIONS] <span className="mx-8 text-[var(--icon)]">★</span>{" "}
+              24/7 SUPPORT <span className="mx-8 text-[var(--icon)]">★</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* FINAL CTA */}
-      <section className="py-32 md:py-48">
+      <section className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
           <Reveal>
-            <h2 className="text-display mb-10 max-w-3xl">Find a car.</h2>
-            <BrutalistButton href="/cars">
-              <span>Browse Vehicles</span>
-              <ArrowIcon size={20} />
-            </BrutalistButton>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16">
+              <div className="w-full md:w-1/2">
+                <h2 className="font-display text-[clamp(72px,8vw,140px)] leading-[0.95] pt-[0.1em] uppercase tracking-tight text-[var(--text-primary)] m-0 p-0">
+                  FIND A CAR.
+                </h2>
+              </div>
+              <div className="w-full md:w-1/2">
+                <div className="bg-white border-2 border-black p-6 md:p-8 shadow-[6px_6px_0px_0px_#000000]">
+                  <SearchPanel />
+                </div>
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>

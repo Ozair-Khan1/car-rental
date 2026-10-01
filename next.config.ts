@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  allowedDevOrigins: ['reservation-couples-keys-examples.trycloudflare.com'], 
+  allowedDevOrigins: ['reservation-couples-keys-examples.trycloudflare.com', "192.168.1.2"], 
 };
 
 export default nextConfig;
