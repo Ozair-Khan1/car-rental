@@ -85,7 +85,7 @@ export default function CarsPage() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-primary)] opacity-50" size={18} />
                 <input 
                   type="text" 
-                  placeholder="SEARCH BRAND OR MODEL"
+                  placeholder="Search brand or model..."
                   className="input-field w-full pl-12 h-[52px]"
                 />
               </div>

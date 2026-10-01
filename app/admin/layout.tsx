@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   LayoutDashboard, 
   CarFront, 
@@ -19,8 +20,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       {/* Admin Sidebar */}
       <aside className="w-64 bg-[var(--surface-elevated)] border-r border-[var(--border-color)] flex flex-col flex-shrink-0 fixed h-full z-40">
-        <div className="p-6 border-b border-[var(--border-color)]">
-          <Link href="/admin" className="text-2xl font-bold tracking-tight">DriveNow <span className="text-[var(--accent)] text-sm uppercase tracking-widest ml-1">Admin</span></Link>
+        <div className="p-5 border-b border-[var(--border-color)]">
+          <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+            <Image
+              src="/logo.png"
+              alt="DriveNow"
+              width={120}
+              height={38}
+              className="h-7 w-auto object-contain"
+            />
+            <span className="bg-black text-[#e8b430] text-[10px] font-black uppercase px-2 py-0.5 tracking-widest border border-black shrink-0">
+              Admin
+            </span>
+          </Link>
         </div>
         
         <div className="flex-1 overflow-y-auto py-4">

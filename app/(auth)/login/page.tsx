@@ -99,10 +99,10 @@ export default function LoginPage() {
           </label>
           <input
             type="email"
-            placeholder="YOU@EXAMPLE.COM"
+            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input-field w-full font-bold uppercase"
+            className="input-field w-full font-bold"
             required
           />
         </div>
@@ -124,7 +124,7 @@ export default function LoginPage() {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input-field w-full font-bold uppercase"
+            className="input-field w-full font-bold"
             required
           />
         </div>

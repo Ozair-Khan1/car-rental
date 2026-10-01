@@ -117,7 +117,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full selection:bg-[var(--text-primary)] selection:text-[var(--background)] overflow-x-hidden relative">
       {/* Global Grid Background */}
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,#0000001a_1px,transparent_1px),linear-gradient(to_bottom,#0000001a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
+      <div className="fixed inset-0 opacity-50 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
 
       {/* HERO SECTION */}
       <section
@@ -194,72 +194,34 @@ export default function Home() {
               </Reveal>
             </div>
 
-            <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               <Reveal delay={0}>
-                <h3 className="text-h3 mb-3">Price</h3>
-                <p className="text-body">[what's included in the daily rate]</p>
+                <div className="card-brutalist h-full flex flex-col">
+                  <h3 className="text-h3 mb-3">Price</h3>
+                  <p className="text-body">
+                    [what's included in the daily rate]
+                  </p>
+                </div>
               </Reveal>
               <Reveal delay={60}>
-                <h3 className="text-h3 mb-3">Insurance</h3>
-                <p className="text-body">[coverage and deductible]</p>
+                <div className="card-brutalist h-full flex flex-col">
+                  <h3 className="text-h3 mb-3">Insurance</h3>
+                  <p className="text-body">[coverage and deductible]</p>
+                </div>
               </Reveal>
               <Reveal delay={120}>
-                <h3 className="text-h3 mb-3">Cancellation</h3>
-                <p className="text-body">[policy]</p>
+                <div className="card-brutalist h-full flex flex-col">
+                  <h3 className="text-h3 mb-3">Cancellation</h3>
+                  <p className="text-body">[policy]</p>
+                </div>
               </Reveal>
               <Reveal delay={180}>
-                <h3 className="text-h3 mb-3">Pick-up</h3>
-                <p className="text-body">[locations and how it works]</p>
+                <div className="card-brutalist h-full flex flex-col">
+                  <h3 className="text-h3 mb-3">Pick-up</h3>
+                  <p className="text-body">[locations and how it works]</p>
+                </div>
               </Reveal>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS ROW */}
-      <section className="pb-16 md:pb-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <Reveal delay={0}>
-              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
-                <span className="text-display text-[var(--icon)] leading-none mb-2">
-                  [10+]
-                </span>
-                <span className="text-body font-bold uppercase tracking-widest">
-                  Cars
-                </span>
-              </div>
-            </Reveal>
-            <Reveal delay={60}>
-              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
-                <span className="text-display text-[var(--icon)] leading-none mb-2">
-                  [24/7]
-                </span>
-                <span className="text-body font-bold uppercase tracking-widest">
-                  Support
-                </span>
-              </div>
-            </Reveal>
-            <Reveal delay={120}>
-              <div className="card-brutalist card-light-hover flex flex-col items-center justify-center text-center p-8 h-full">
-                <span className="text-display text-[var(--icon)] leading-none mb-2">
-                  [00]
-                </span>
-                <span className="text-body font-bold uppercase tracking-widest">
-                  Cities
-                </span>
-              </div>
-            </Reveal>
-            <Reveal delay={180}>
-              <div className="card-brutalist flex flex-col items-center justify-center text-center p-8 h-full">
-                <span className="text-display text-[var(--icon)] leading-none mb-2">
-                  [00]
-                </span>
-                <span className="text-body font-bold uppercase tracking-widest">
-                  Happy Renters
-                </span>
-              </div>
-            </Reveal>
           </div>
         </div>
       </section>
@@ -522,7 +484,7 @@ export default function Home() {
                 </h2>
               </div>
               <div className="w-full md:w-1/2">
-                <div className="bg-white border-2 border-black p-6 md:p-8 shadow-[6px_6px_0px_0px_#000000]">
+                <div className="bg-white border-2 border-black p-6 md:p-8 shadow-[4px_4px_0px_0px_#000000]">
                   <SearchPanel />
                 </div>
               </div>

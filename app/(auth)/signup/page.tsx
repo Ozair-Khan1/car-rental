@@ -17,7 +17,7 @@ import {
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { registerUser } from "@/api/auth";
+import { sendVerificationCode } from "@/api/auth";
 
 export default function SignupPage() {
   const formRef = useRef<HTMLDivElement>(null);
@@ -26,9 +26,6 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    password: "",
-    confirmPassword: "",
-    role: "CUSTOMER",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -46,42 +43,43 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    if (
-      !formData.fullName ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setError("Please fill in all fields.");
-      return;
-    }
+    const name = formData.fullName.trim();
+    const email = formData.email.trim();
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (!name || !email) {
+      setError("Please fill in both name and email.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const form = new FormData(e.currentTarget);
-      const res = await registerUser(form);
+      const res = await sendVerificationCode(email, name);
 
       if (res.error) {
         setError(res.error);
-        toast.error("Registration failed", { description: res.error });
-      } else if (res.success) {
-        toast.success("Account created!", { description: res.success });
-        router.push("/login");
+        toast.error("Registration issue", { description: res.error });
+        return;
       }
-    } catch (err) {
+
+      // Store in sessionStorage and pass to verification page
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("signup_name", name);
+        sessionStorage.setItem("signup_email", email);
+      }
+
+      toast.success("Verification code sent!", {
+        description: `Check your inbox at ${email}`,
+      });
+
+      const query = new URLSearchParams({
+        name,
+        email,
+      }).toString();
+
+      router.push(`/signup/verify?${query}`);
+    } catch {
       setError("An unexpected error occurred. Please try again.");
-      toast.error("Error", { description: "An unexpected error occurred." });
     } finally {
       setIsLoading(false);
     }
@@ -123,63 +121,17 @@ export default function SignupPage() {
           </div>
         )}
 
-        <div className="stagger-item space-y-2 mb-2">
-          <label className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)]">
-            How do you want to use DriveNow?
-          </label>
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, role: "CUSTOMER" })}
-              className={`p-3 border-2 transition-all text-left focus:outline-none ${
-                formData.role === "CUSTOMER"
-                  ? "border-[var(--border)] bg-[#e8b430] text-[var(--text-primary)] shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-                  : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)]"
-              }`}
-            >
-              <div className="font-black uppercase tracking-widest text-base">
-                RENT A CAR
-              </div>
-              <div
-                className={`text-[10px] font-bold uppercase tracking-widest mt-0.5 ${formData.role === "CUSTOMER" ? "text-[var(--text-primary)]" : "text-[var(--text-primary)] opacity-70"}`}
-              >
-                Find and book cars from owners
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, role: "OWNER" })}
-              className={`p-3 border-2 transition-all text-left focus:outline-none ${
-                formData.role === "OWNER"
-                  ? "border-[var(--border)] bg-[#e8b430] text-[var(--text-primary)] shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-                  : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)]"
-              }`}
-            >
-              <div className="font-black uppercase tracking-widest text-base">
-                LIST MY CAR
-              </div>
-              <div
-                className={`text-[10px] font-bold uppercase tracking-widest mt-0.5 ${formData.role === "OWNER" ? "text-[var(--text-primary)]" : "text-[var(--text-primary)] opacity-70"}`}
-              >
-                Rent out your car and earn money
-              </div>
-            </button>
-          </div>
-          <input type="hidden" name="role" value={formData.role} />
-        </div>
-
         <div className="stagger-item space-y-2">
           <label className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)]">
             Full Name
           </label>
           <input
             type="text"
-            placeholder="JOHN DOE"
+            placeholder="John Doe"
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="input-field w-full font-bold uppercase"
+            className="input-field w-full font-bold"
             required
           />
         </div>
@@ -190,45 +142,13 @@ export default function SignupPage() {
           </label>
           <input
             type="email"
-            placeholder="YOU@EXAMPLE.COM"
+            placeholder="you@example.com"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="input-field w-full font-bold uppercase"
+            className="input-field w-full font-bold"
             required
           />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="stagger-item space-y-2">
-            <label className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)]">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="STRONG PASSWORD"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input-field w-full font-bold uppercase"
-              required
-            />
-          </div>
-
-          <div className="stagger-item space-y-2">
-            <label className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)]">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              placeholder="CONFIRM PASSWORD"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="input-field w-full font-bold uppercase"
-              required
-            />
-          </div>
         </div>
 
         <div className="stagger-item pt-2">
@@ -239,7 +159,8 @@ export default function SignupPage() {
             containerClassName="w-full"
           >
             <span className="flex items-center justify-center gap-2">
-              {isLoading ? "CREATING..." : "CREATE ACCOUNT"}
+              {isLoading ? "PROCESSING..." : "CONTINUE"}
+              <ArrowRight className="w-5 h-5" />
             </span>
           </BrutalistButton>
         </div>

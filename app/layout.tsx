@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   title: "DriveNow | Car Rental",
   description:
     "Premium vehicles, flexible rentals, and a smarter way to get where you're going.",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -36,7 +40,12 @@ export default function RootLayout({
         className={`${fontSans.variable} ${fontDisplay.variable} font-sans antialiased min-h-screen flex flex-col bg-[var(--background)] text-[var(--text-primary)]`}
       >
         <SessionProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
             <Toaster position="top-center" richColors />
             <Navbar />
             <main className="flex-1">{children}</main>

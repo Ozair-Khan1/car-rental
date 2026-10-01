@@ -67,3 +67,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Location {
+  id          String   @id @default(cuid())
+  city        String
+  country     String
+  countryCode String
+  imageUrl    String
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([city, countryCode])
+}

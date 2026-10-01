@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Globe } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Reveal } from "@/components/ui/reveal";
@@ -10,7 +11,13 @@ export function Footer() {
   const pathname = usePathname();
 
   // Hide footer on auth routes
-  if (pathname === "/login" || pathname === "/signup") {
+  const isAuthRoute =
+    pathname === "/login" ||
+    pathname.startsWith("/signup") ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password";
+
+  if (isAuthRoute) {
     return null;
   }
 
@@ -18,26 +25,34 @@ export function Footer() {
     <footer className="pt-24 pb-12 w-full bg-[var(--background)] relative z-10 flex flex-col items-center">
       <div className="container px-4 md:px-6 w-full max-w-[1350px]">
         {/* Yellow Footer Card */}
-        <div className="bg-[#E8B42A] border-2 border-black shadow-[8px_8px_0px_0px_#000000] p-6 md:p-12 text-black w-full flex flex-col gap-12">
+        <div className="bg-[#E8B42A] border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 md:p-12 text-black w-full flex flex-col gap-12">
           {/* Top row */}
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
-            <h2 className="font-display text-h1 uppercase leading-none tracking-tight">
-              DriveNow
-            </h2>
-            <div className="w-16 h-1 bg-black"></div>
+            <Link
+              href="/"
+              className="inline-block hover:opacity-90 transition-opacity"
+            >
+              <Image
+                src="/logo.png"
+                alt="DriveNow"
+                width={280}
+                height={80}
+                className="h-11 sm:h-12 md:h-13 lg:h-14 w-auto object-contain"
+              />
+            </Link>
           </div>
 
           {/* 4 Clean Columns */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <Reveal delay={0}>
-              <h4 className="text-[14px] font-display uppercase mb-6 text-black tracking-widest font-bold">
+              <h5 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
                 Company
-              </h4>
+              </h5>
               <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
                 <li>
                   <Link
                     href="/about"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     About us
                   </Link>
@@ -45,7 +60,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/careers"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Careers
                   </Link>
@@ -53,7 +68,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/contact"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Contact
                   </Link>
@@ -62,14 +77,14 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={60}>
-              <h4 className="text-[14px] font-display uppercase mb-6 text-black tracking-widest font-bold">
+              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
                 Rentals
-              </h4>
+              </h3>
               <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
                 <li>
                   <Link
                     href="/cars"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Cars
                   </Link>
@@ -77,7 +92,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/locations"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Locations
                   </Link>
@@ -85,7 +100,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/deals"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Deals
                   </Link>
@@ -94,14 +109,14 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={120}>
-              <h4 className="text-[14px] font-display uppercase mb-6 text-black tracking-widest font-bold">
+              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
                 Support
-              </h4>
+              </h3>
               <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
                 <li>
                   <Link
                     href="/help"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Help center
                   </Link>
@@ -109,7 +124,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/cancellation"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Cancellation
                   </Link>
@@ -117,7 +132,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/insurance"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Insurance
                   </Link>
@@ -126,14 +141,14 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={180}>
-              <h4 className="text-[14px] font-display uppercase mb-6 text-black tracking-widest font-bold">
+              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
                 Legal
-              </h4>
+              </h3>
               <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
                 <li>
                   <Link
                     href="/legal/terms"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Terms
                   </Link>
@@ -141,17 +156,9 @@ export function Footer() {
                 <li>
                   <Link
                     href="/legal/privacy"
-                    className="hover:underline underline-offset-4"
+                    className="link-underline transition-colors w-fit"
                   >
                     Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/legal/cookies"
-                    className="hover:underline underline-offset-4"
-                  >
-                    Cookies
                   </Link>
                 </li>
               </ul>
@@ -164,16 +171,6 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-[14px] text-black font-medium">
             <div>
               &copy; {new Date().getFullYear()} DriveNow. All rights reserved.
-            </div>
-
-            <div className="flex items-center gap-6">
-              <button className="flex items-center gap-2 hover:opacity-70 transition-opacity">
-                <Globe size={16} className="text-black" />
-                <span>English (US)</span>
-              </button>
-              <button className="hover:opacity-70 transition-opacity">
-                $ USD
-              </button>
             </div>
           </div>
         </div>

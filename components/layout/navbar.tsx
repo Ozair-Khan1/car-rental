@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -37,7 +38,13 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  if (pathname === "/login" || pathname === "/signup") {
+  const isAuthRoute =
+    pathname === "/login" ||
+    pathname.startsWith("/signup") ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password";
+
+  if (isAuthRoute) {
     return null;
   }
 
@@ -53,9 +60,14 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 relative z-50">
-            <span className="text-3xl font-display uppercase tracking-wider text-[var(--text-primary)]">
-              DRIVENOW
-            </span>
+            <Image
+              src="/logo.png"
+              alt="DriveNow"
+              width={160}
+              height={44}
+              className="h-11 sm:h-12 md:h-13 lg:h-14 w-auto object-contain hover:opacity-90 transition-opacity"
+              priority
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">

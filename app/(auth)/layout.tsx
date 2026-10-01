@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 
@@ -16,8 +17,8 @@ export default function AuthLayout({
         <BrutalistButton
           href="/"
           variant="white"
-          containerClassName="w-full lg:w-[180px]"
-          className="h-[56px] px-6 py-0"
+          containerClassName="w-full lg:w-[150px]"
+          className="h-[40px] px-4 py-0"
         >
           <span>Home</span>
         </BrutalistButton>
@@ -28,9 +29,16 @@ export default function AuthLayout({
         <div className="relative z-10 flex flex-col h-full justify-center">
           <Link
             href="/"
-            className="text-4xl font-display tracking-widest text-black mb-8 border-2 border-black inline-block w-fit px-6 py-2 bg-[var(--surface)] shadow-[4px_4px_0px_0px_#000000]"
+            className="inline-block mb-8 w-fit hover:opacity-90 transition-opacity"
           >
-            DriveNow
+            <Image
+              src="/logo.png"
+              alt="DriveNow"
+              width={260}
+              height={72}
+              className="h-16 lg:h-20 w-auto object-contain"
+              priority
+            />
           </Link>
           <h2 className="text-[5rem] lg:text-[7rem] mb-8 leading-[0.85] text-black uppercase tracking-tighter">
             No Limits.
@@ -48,12 +56,19 @@ export default function AuthLayout({
       <div className="w-full md:w-1/2 min-h-screen flex items-center justify-center p-4 sm:p-8 lg:p-12 bg-[var(--background)] relative animate-grid bg-[size:40px_40px] bg-[image:linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)]">
         <div className="w-full max-w-md relative z-10 card-brutalist">
           {/* Mobile Logo */}
-          <div className="md:hidden mb-12 text-center">
+          <div className="md:hidden mb-8 text-center flex justify-center">
             <Link
               href="/"
-              className="text-4xl font-display uppercase tracking-widest text-black bg-[var(--icon)] border-2 border-[var(--border)] inline-block px-6 py-2 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+              className="inline-block hover:opacity-90 transition-opacity"
             >
-              DRIVENOW
+              <Image
+                src="/logo.png"
+                alt="DriveNow"
+                width={200}
+                height={56}
+                className="h-12 w-auto object-contain"
+                priority
+              />
             </Link>
           </div>
 
