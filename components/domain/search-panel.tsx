@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
+import { DatePicker } from "@/components/ui/date-picker";
 
 export function SearchPanel({
   variant = "hero",
@@ -45,61 +46,51 @@ export function SearchPanel({
     return (
       <form
         onSubmit={handleSearch}
-        className="card-brutalist flex flex-col gap-6 w-full"
+        className="card-brutalist flex flex-col gap-5 w-full"
       >
         <div className="flex flex-col gap-2 relative">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] opacity-50 uppercase tracking-wider">
+          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
             Pick-up location
           </label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
+            placeholder="City, airport or address"
             className="input-field w-full"
           />
         </div>
 
-        <div className="flex flex-col gap-2 relative">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] uppercase tracking-wider">
-            Pick-up date
-          </label>
-          <input
-            type="date"
-            value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
-            className="input-field w-full [color-scheme:light]"
-          />
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2 relative">
+            <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+              Pick-up date
+            </label>
+            <DatePicker value={pickup} onChange={setPickup} />
+          </div>
 
-        <div className="flex flex-col gap-2 relative">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] uppercase tracking-wider">
-            Drop-off date
-          </label>
-          <input
-            type="date"
-            value={dropoff}
-            className="input-field w-full [color-scheme:light]"
-          />
+          <div className="flex flex-col gap-2 relative">
+            <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+              Drop-off date
+            </label>
+            <DatePicker
+              value={dropoff}
+              onChange={setDropoff}
+              minDate={pickup || undefined}
+            />
+          </div>
         </div>
 
         {error && <div className="text-[13px] text-red-600 mt-1">{error}</div>}
 
         <BrutalistButton
           type="submit"
-          containerClassName="w-full mt-4"
+          containerClassName="w-full mt-2"
+          className="py-4 text-sm"
         >
           <span>Search cars</span>
           <ArrowRight size={20} />
         </BrutalistButton>
-
-        <div className="text-center mt-4">
-          <button
-            type="button"
-            className="text-[14px] text-[var(--text-primary)] hover:underline transition-all focus-visible:outline-[var(--text-primary)]"
-          >
-            Return to a different location
-          </button>
-        </div>
       </form>
     );
   }
@@ -112,7 +103,7 @@ export function SearchPanel({
       >
         {/* Pick-up Location */}
         <div className="flex-1 w-full flex flex-col gap-2">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
             Pick-up location
           </label>
           <input
@@ -126,27 +117,21 @@ export function SearchPanel({
 
         {/* Pick-up Date */}
         <div className="w-full lg:w-48 flex flex-col gap-2">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
             Pick-up date
           </label>
-          <input
-            type="date"
-            value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
-            className="input-field w-full [color-scheme:light]"
-          />
+          <DatePicker value={pickup} onChange={setPickup} />
         </div>
 
         {/* Drop-off Date */}
         <div className="w-full lg:w-48 flex flex-col gap-2">
-          <label className="text-[13px] font-medium text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
             Drop-off date
           </label>
-          <input
-            type="date"
+          <DatePicker
             value={dropoff}
-            onChange={(e) => setDropoff(e.target.value)}
-            className="input-field w-full [color-scheme:light]"
+            onChange={setDropoff}
+            minDate={pickup || undefined}
           />
         </div>
 
@@ -165,20 +150,52 @@ export function SearchPanel({
 
       {error && <div className="text-[13px] text-red-600 px-2">{error}</div>}
 
-      {/* Trust Line & Return location checkbox */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 pt-2">
-        <div className="text-[14px] text-[var(--text-primary)] font-medium">
-          Free cancellation &middot; No hidden fees
+      {/* How it works — 3-step visual flow */}
+      <div className="flex items-center justify-center w-full gap-0 pt-4 pb-1">
+        {/* Step 1 */}
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="text-[13px] font-bold text-black">1</span>
+          </div>
+          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+            Choose a location
+          </span>
+          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+            Location
+          </span>
         </div>
 
-        <label className="flex items-center gap-3 cursor-pointer group">
-          <div className="w-5 h-5 border-2 border-[var(--border)] bg-[var(--surface)] flex items-center justify-center group-hover:bg-[var(--text-primary)] transition-colors">
-            {/* Checked state placeholder */}
+        {/* Connector */}
+        <div className="flex-1 max-w-[60px] h-[2px] bg-[var(--border)] mx-3" />
+
+        {/* Step 2 */}
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="text-[13px] font-bold text-black">2</span>
           </div>
-          <span className="text-[14px] font-medium select-none text-[var(--text-primary)] transition-colors">
-            Return to a different location
+          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+            Pick-up date
           </span>
-        </label>
+          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+            Pick-up
+          </span>
+        </div>
+
+        {/* Connector */}
+        <div className="flex-1 max-w-[60px] h-[2px] bg-[var(--border)] mx-3" />
+
+        {/* Step 3 */}
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
+            <span className="text-[13px] font-bold text-black">3</span>
+          </div>
+          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+            Drop-off date
+          </span>
+          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+            Drop-off
+          </span>
+        </div>
       </div>
     </div>
   );

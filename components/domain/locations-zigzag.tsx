@@ -364,7 +364,7 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
   };
 
   return (
-    <section className="py-16 md:py-24 relative z-10 bg-[var(--surface)]">
+    <section className="py-16 md:py-24 relative z-10 bg-[var(--surface)] border-2 border-black shadow-[4px_4px_0px_0px_var(--shadow-color)]">
       <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-16 md:mb-24 gap-4">
           <h2 className="text-h2">Where you can pick up and go.</h2>

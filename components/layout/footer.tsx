@@ -2,8 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Globe } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -23,32 +21,32 @@ export function Footer() {
 
   return (
     <footer className="pt-24 pb-12 w-full bg-[var(--background)] relative z-10 flex flex-col items-center">
-      <div className="container px-4 md:px-6 w-full max-w-[1350px]">
+      <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
         {/* Yellow Footer Card */}
         <div className="bg-[#E8B42A] border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 md:p-12 text-black w-full flex flex-col gap-12">
-          {/* Top row */}
+          {/* Top row: Inverted Logo */}
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
             <Link
               href="/"
-              className="inline-block hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-1.5 hover:opacity-90 transition-opacity select-none"
+              aria-label="DriveNow Home"
             >
-              <Image
-                src="/logo.png"
-                alt="DriveNow"
-                width={280}
-                height={80}
-                className="h-11 sm:h-12 md:h-13 lg:h-14 w-auto object-contain"
-              />
+              <span className="font-display font-black text-3xl sm:text-4xl md:text-[42px] leading-none text-black uppercase tracking-tight">
+                DRIVE
+              </span>
+              <span className="bg-black text-[#E8B42A] border-2 border-black px-2.5 py-0.5 font-display font-black text-3xl sm:text-4xl md:text-[42px] leading-none uppercase tracking-tight">
+                NOW
+              </span>
             </Link>
           </div>
 
-          {/* 4 Clean Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <Reveal delay={0}>
-              <h5 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
+          {/* 4 Clean Columns: perfectly aligned baselines */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start">
+            <Reveal delay={0} className="flex flex-col">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
                 Company
-              </h5>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
+              </h3>
+              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/about"
@@ -76,11 +74,11 @@ export function Footer() {
               </ul>
             </Reveal>
 
-            <Reveal delay={60}>
-              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
+            <Reveal delay={60} className="flex flex-col">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
                 Rentals
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
+              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/cars"
@@ -108,11 +106,11 @@ export function Footer() {
               </ul>
             </Reveal>
 
-            <Reveal delay={120}>
-              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
+            <Reveal delay={120} className="flex flex-col">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
                 Support
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
+              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/help"
@@ -140,11 +138,11 @@ export function Footer() {
               </ul>
             </Reveal>
 
-            <Reveal delay={180}>
-              <h3 className="text-[24px] font-display uppercase mb-6 text-black tracking-widest font-semibold">
+            <Reveal delay={180} className="flex flex-col">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
                 Legal
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium">
+              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/legal/terms"
@@ -167,7 +165,7 @@ export function Footer() {
 
           <div className="w-full h-[2px] bg-black"></div>
 
-          {/* Bottom row: Copyright & Language */}
+          {/* Bottom row: Copyright */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-[14px] text-black font-medium">
             <div>
               &copy; {new Date().getFullYear()} DriveNow. All rights reserved.

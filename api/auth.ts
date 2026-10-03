@@ -171,11 +171,24 @@ export async function requestPasswordReset(email: string) {
 
     const user = await db.user.findUnique({
       where: { email: cleanEmail },
+      include: { accounts: true },
     });
 
     if (!user) {
       return {
         error: "No account found with this email. Please check your spelling or sign up.",
+      };
+    }
+
+    // If the user signed up via OAuth (Google, etc.) and has no password,
+    // they can't reset a password that doesn't exist.
+    if (!user.password) {
+      const oauthProvider = user.accounts[0]?.provider;
+      const providerName = oauthProvider
+        ? oauthProvider.charAt(0).toUpperCase() + oauthProvider.slice(1)
+        : "your social account";
+      return {
+        error: `This account was created with ${providerName}. Please sign in using ${providerName} instead.`,
       };
     }
 

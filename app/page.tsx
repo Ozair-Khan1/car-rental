@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { SearchPanel } from "@/components/domain/search-panel";
 import { LocationsZigzag } from "@/components/domain/locations-zigzag";
+import { ProcessSection } from "@/components/domain/process-section";
 import { mockVehicles } from "@/lib/mock-data";
 import {
   ArrowLeft,
@@ -15,6 +16,8 @@ import {
   Plus,
   Minus,
   ArrowRight as ArrowIcon,
+  Quote,
+  Star,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
@@ -26,7 +29,13 @@ if (typeof window !== "undefined") {
 export default function Home() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [isTestimonialPaused, setIsTestimonialPaused] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+
+  const quoteTextRef = useRef<HTMLQuoteElement>(null);
+  const authorRef = useRef<HTMLParagraphElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const starsRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -105,13 +114,118 @@ export default function Home() {
     },
   ];
 
+  const nextTestimonial = useCallback(() => {
+    setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+  }, [testimonials.length]);
+
+  const prevTestimonial = useCallback(() => {
+    setActiveTestimonial((prev) =>
+      prev === 0 ? testimonials.length - 1 : prev - 1,
+    );
+  }, [testimonials.length]);
+
+  // Smooth entrance animation whenever activeTestimonial changes
+  useGSAP(
+    () => {
+      if (!quoteTextRef.current) return;
+
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReduced) {
+        gsap.fromTo(
+          quoteTextRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.2 },
+        );
+        return;
+      }
+
+      // Smooth kinetic blur & vertical slide for quote text
+      gsap.fromTo(
+        quoteTextRef.current,
+        { opacity: 0, y: 14, filter: "blur(4px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.45,
+          ease: "power3.out",
+        },
+      );
+
+      // Smooth slide for author name
+      if (authorRef.current) {
+        gsap.fromTo(
+          authorRef.current,
+          { opacity: 0, x: -10 },
+          { opacity: 1, x: 0, duration: 0.38, ease: "power2.out", delay: 0.06 },
+        );
+      }
+
+      // Snappy brutalist recoil on the yellow column's quote badge
+      if (badgeRef.current) {
+        gsap.fromTo(
+          badgeRef.current,
+          { rotate: -9, scale: 0.88 },
+          { rotate: -3, scale: 1, duration: 0.45, ease: "back.out(2.2)" },
+        );
+      }
+
+      // Staggered twinkle on the 5 stars
+      if (starsRef.current) {
+        gsap.fromTo(
+          starsRef.current.children,
+          { scale: 0.6, opacity: 0.2 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.3,
+            stagger: 0.04,
+            ease: "power2.out",
+          },
+        );
+      }
+    },
+    { dependencies: [activeTestimonial] },
+  );
+
+  // Auto-change timer
+  useEffect(() => {
+    if (isTestimonialPaused) return;
+
+    const interval = setInterval(() => {
+      nextTestimonial();
+    }, 5500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isTestimonialPaused, nextTestimonial, activeTestimonial]);
+
   const faqs = [
-    { q: "Who can rent a car?", a: "[Answer details]" },
-    { q: "What do I need to book?", a: "[Answer details]" },
-    { q: "What's the security deposit?", a: "[Answer details]" },
-    { q: "How does cancellation work?", a: "[Answer details]" },
-    { q: "What if there's an accident?", a: "[Answer details]" },
-    { q: "What's the fuel policy?", a: "[Answer details]" },
+    {
+      q: "Who can rent a car?",
+      a: "Anyone with a valid driving license and a National Identity Card, aged 18 or older.",
+    },
+    {
+      q: "What do I need to book?",
+      a: "Your driving license, your National Identity Card and a phone number we can reach you on. Choose a car, pick your dates and send your request.",
+    },
+    { q: "What's the security deposit?", a: "There is no deposit." },
+    {
+      q: "How does cancellation work?",
+      a: "Cancel free up to 24 hours before pick-up. After that, no refund. To change your dates, message us and we'll sort it out.",
+    },
+    {
+      q: "What if there's an accident?",
+      a: "Call phone number right away. Don't move the car if it is unsafe to do so, and take photos.",
+    },
+    {
+      q: "What's the fuel policy?",
+      a: "Pick up and return the car with the same fuel level",
+    },
   ];
 
   return (
@@ -136,9 +250,8 @@ export default function Home() {
                 </span>
               </h1>
               <div className="hero-subtitle overflow-hidden">
-                <p className="text-body max-w-md">
-                  Pick up a car in [City], with prices from [Price] and free
-                  cancellation up to 24h before.
+                <p className="text-xl font-medium max-w-md">
+                  Choose a car, pick your dates, and book. No counter, no queue.
                 </p>
               </div>
             </div>
@@ -180,54 +293,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* WHY CHOOSE US */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-32">
-            <div className="lg:w-1/3">
-              <Reveal>
-                <h2 className="text-h2 mb-6">Drive on your terms.</h2>
-                <p className="text-body mb-8">
-                  Insurance included. No counter queues. Cancel free up to [24h]
-                  before pick-up.
-                </p>
-              </Reveal>
-            </div>
-
-            <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              <Reveal delay={0}>
-                <div className="card-brutalist h-full flex flex-col">
-                  <h3 className="text-h3 mb-3">Price</h3>
-                  <p className="text-body">
-                    [what's included in the daily rate]
-                  </p>
-                </div>
-              </Reveal>
-              <Reveal delay={60}>
-                <div className="card-brutalist h-full flex flex-col">
-                  <h3 className="text-h3 mb-3">Insurance</h3>
-                  <p className="text-body">[coverage and deductible]</p>
-                </div>
-              </Reveal>
-              <Reveal delay={120}>
-                <div className="card-brutalist h-full flex flex-col">
-                  <h3 className="text-h3 mb-3">Cancellation</h3>
-                  <p className="text-body">[policy]</p>
-                </div>
-              </Reveal>
-              <Reveal delay={180}>
-                <div className="card-brutalist h-full flex flex-col">
-                  <h3 className="text-h3 mb-3">Pick-up</h3>
-                  <p className="text-body">[locations and how it works]</p>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FEATURED FLEET */}
-      <section className="py-16 md:py-24 bg-[var(--background)]">
+      <section id="fleet" className="py-16 md:py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
           <Reveal>
             <div className="flex flex-col md:flex-row items-baseline justify-between mb-16">
@@ -291,58 +358,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-            <div className="lg:w-1/3">
-              <Reveal>
-                <h2 className="text-h2">The process</h2>
-              </Reveal>
-            </div>
-            <div className="lg:w-2/3">
-              <div className="flex flex-col gap-8">
-                <Reveal delay={0}>
-                  <div className="card-brutalist flex gap-8 items-start">
-                    <span className="text-h3 text-[var(--icon)]">01</span>
-                    <div>
-                      <h3 className="text-h3 mb-3">Reserve</h3>
-                      <p className="text-body max-w-lg text-[var(--text-primary)]">
-                        Select your dates, choose a location, and pick a vehicle
-                        from our collection.
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-                <Reveal delay={60}>
-                  <div className="card-brutalist flex gap-8 items-start">
-                    <span className="text-h3 text-[var(--icon)]">02</span>
-                    <div>
-                      <h3 className="text-h3 mb-3">Verify</h3>
-                      <p className="text-body max-w-lg text-[var(--text-primary)]">
-                        Upload your driver's license and verify your identity
-                        securely within minutes.
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-                <Reveal delay={120}>
-                  <div className="card-brutalist flex gap-8 items-start">
-                    <span className="text-h3 text-[var(--icon)]">03</span>
-                    <div>
-                      <h3 className="text-h3 mb-3">Drive</h3>
-                      <p className="text-body max-w-lg text-[var(--text-primary)]">
-                        Locate your vehicle using the app, open the doors via
-                        Bluetooth, and begin your trip.
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ProcessSection />
 
       {/* PICK-UP LOCATIONS */}
       <LocationsZigzag />
@@ -351,42 +367,70 @@ export default function Home() {
       <section className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
           <Reveal>
-            <div className="flex flex-col md:flex-row bg-[var(--surface)] border-[2px] border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)]">
-              {/* Giant Quote Column */}
-              <div className="hidden md:flex md:w-1/4 bg-[var(--icon)] border-r-[2px] border-[var(--border)] items-start justify-center pt-12">
-                <span className="text-[180px] leading-none text-black font-black font-serif -mt-8">
-                  "
-                </span>
+            {/* Section Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12">
+              <div>
+                <h2 className="text-h2">What drivers & Renters say.</h2>
+              </div>
+            </div>
+
+            {/* Testimonial Card */}
+            <div
+              onMouseEnter={() => setIsTestimonialPaused(true)}
+              onMouseLeave={() => setIsTestimonialPaused(false)}
+              className="flex flex-col md:flex-row bg-[var(--surface)] border-[2px] border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)] relative overflow-hidden"
+            >
+              {/* Left Column: Yellow Accent with Quote & Stars */}
+              <div className="w-full md:w-[240px] lg:w-[280px] shrink-0 bg-[var(--icon)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--border)] flex flex-row md:flex-col items-center justify-between md:justify-center p-6 md:p-8 gap-4 md:gap-8">
+                {/* Quote Icon Badge */}
+                <div
+                  ref={badgeRef}
+                  className="w-12 h-12 md:w-16 md:h-16 bg-black flex items-center justify-center border-2 border-black shadow-[3px_3px_0px_0px_#000] rotate-[-3deg] shrink-0 will-change-transform"
+                >
+                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-[#e8b430] fill-[#e8b430]" />
+                </div>
+
+                {/* 5-Star Rating */}
+                <div ref={starsRef} className="flex gap-1 text-black">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={18} className="fill-black text-black" />
+                  ))}
+                </div>
               </div>
 
-              {/* Content Column */}
-              <div className="p-8 md:p-16 flex flex-col justify-between gap-12 w-full md:w-3/4">
-                <h2 className="text-h2 text-[var(--text-primary)] leading-tight uppercase">
-                  {testimonials[activeTestimonial].quote}
-                </h2>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-8 border-t-2 border-[var(--border)] pt-8 mt-4">
-                  <p className="text-h3 font-bold text-[var(--text-primary)] uppercase tracking-widest">
-                    {testimonials[activeTestimonial].name}
-                  </p>
-                  <div className="flex gap-4 shrink-0">
+              {/* Right Column: Quote Content & Author Controls */}
+              <div className="p-6 md:p-12 lg:p-14 flex flex-col justify-between gap-8 flex-1 min-h-[250px] md:min-h-[280px]">
+                <blockquote
+                  ref={quoteTextRef}
+                  className="font-display text-2xl sm:text-3xl lg:text-4xl text-[var(--text-primary)] leading-[1.25] uppercase tracking-tight will-change-transform"
+                >
+                  &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
+                </blockquote>
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-6 border-t-2 border-[var(--border)] pt-6 mt-2">
+                  <div>
+                    <p
+                      ref={authorRef}
+                      className="text-xl md:text-2xl font-display font-black text-[var(--text-primary)] uppercase tracking-wider will-change-transform"
+                    >
+                      {testimonials[activeTestimonial].name}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-mono text-xs font-bold text-[var(--text-tertiary)] mr-2 md:hidden">
+                      0{activeTestimonial + 1} / 0{testimonials.length}
+                    </span>
                     <BrutalistButton
                       variant="icon"
-                      onClick={() =>
-                        setActiveTestimonial((prev) =>
-                          prev === 0 ? testimonials.length - 1 : prev - 1,
-                        )
-                      }
+                      onClick={prevTestimonial}
                       aria-label="Previous testimonial"
                     >
                       <ArrowLeft size={24} />
                     </BrutalistButton>
                     <BrutalistButton
                       variant="icon"
-                      onClick={() =>
-                        setActiveTestimonial((prev) =>
-                          prev === testimonials.length - 1 ? 0 : prev + 1,
-                        )
-                      }
+                      onClick={nextTestimonial}
                       aria-label="Next testimonial"
                     >
                       <ArrowRight size={24} />
@@ -407,7 +451,7 @@ export default function Home() {
               <div className="sticky top-32">
                 <Reveal>
                   <h2 className="text-h2 mb-6 pt-[0.1em]">Questions?</h2>
-                  <p className="text-body max-w-sm">
+                  <p className="text-xl font-medium max-w-sm">
                     Everything you need to know about booking and hitting the
                     road.
                   </p>
@@ -479,14 +523,12 @@ export default function Home() {
           <Reveal>
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16">
               <div className="w-full md:w-1/2">
-                <h2 className="font-display text-[clamp(72px,8vw,140px)] leading-[0.95] pt-[0.1em] uppercase tracking-tight text-[var(--text-primary)] m-0 p-0">
-                  FIND A CAR.
+                <h2 className="font-display text-[clamp(62px,6vw,120px)] leading-[0.95] pt-[0.1em] uppercase tracking-tight text-[var(--text-primary)] m-0 p-0">
+                  LET'S FIND A CAR.
                 </h2>
               </div>
               <div className="w-full md:w-1/2">
-                <div className="bg-white border-2 border-black p-6 md:p-8 shadow-[4px_4px_0px_0px_#000000]">
-                  <SearchPanel />
-                </div>
+                <SearchPanel variant="compact" />
               </div>
             </div>
           </Reveal>

@@ -264,6 +264,54 @@
     transform: none;
     box-shadow: 4px 4px 0px 0px var(--shadow-color);
   }
+
+  /* ─── Date Picker / Calendar Theme ─── */
+  input[type="date"] {
+    accent-color: #e8b430;
+    color-scheme: light;
+  }
+
+  .dark input[type="date"] {
+    color-scheme: dark;
+  }
+
+  /* Calendar icon styling */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 150ms ease;
+    filter: none;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
+  /* Chrome/Edge date picker popup styling */
+  ::-webkit-datetime-edit {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 500;
+  }
+  ::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  ::-webkit-datetime-edit-day-field,
+  ::-webkit-datetime-edit-month-field,
+  ::-webkit-datetime-edit-year-field {
+    padding: 2px 4px;
+    border-radius: 0;
+  }
+  ::-webkit-datetime-edit-day-field:focus,
+  ::-webkit-datetime-edit-month-field:focus,
+  ::-webkit-datetime-edit-year-field:focus {
+    background-color: #e8b430;
+    color: #000000;
+    outline: none;
+    border-radius: 0;
+  }
 }
 
 @keyframes move-grid {
