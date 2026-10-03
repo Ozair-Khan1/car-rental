@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -28,15 +29,17 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 hover:opacity-90 transition-opacity select-none"
+              className="inline-flex items-center hover:opacity-90 transition-opacity select-none"
               aria-label="DriveNow Home"
             >
-              <span className="font-display font-black text-3xl sm:text-4xl md:text-[42px] leading-none text-black uppercase tracking-tight">
-                DRIVE
-              </span>
-              <span className="bg-black text-[#E8B42A] border-2 border-black px-2.5 py-0.5 font-display font-black text-3xl sm:text-4xl md:text-[42px] leading-none uppercase tracking-tight">
-                NOW
-              </span>
+              <Image
+                src="/logo-footer.svg"
+                alt="DriveNow"
+                width={200}
+                height={56}
+                className="h-[42px] sm:h-[50px] md:h-[56px] w-auto"
+                priority
+              />
             </Link>
           </div>
 
