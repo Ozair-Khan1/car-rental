@@ -31,9 +31,7 @@ export const BrutalistButton = React.forwardRef<
     // Outer Wrapper: Added 'active:' states for a physical "crunch" when clicked
     const wrapperClasses = cn(
       "group/btn group relative inline-block rounded-none transition-all duration-150 overflow-hidden focus:outline-none border-2",
-      isDark
-        ? "border-black shadow-[4px_4px_0px_0px_#E8B42A] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#E8B42A] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-        : "border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none",
+      "border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
       containerClassName,
     );
 
@@ -44,10 +42,20 @@ export const BrutalistButton = React.forwardRef<
       className,
     );
 
-    const primaryBg = variant === "white" ? "bg-[var(--surface)]" : isDark ? "bg-[#0A0A0A]" : "bg-[#e8b430]";
-    const primaryText = variant === "white" ? "text-[var(--text-primary)]" : isDark ? "text-[#F4F2EC]" : "text-black";
-    const hoverBg = isDark ? "bg-[#E8B42A]" : "bg-[var(--text-primary)]";
-    const hoverText = isDark ? "text-black" : "text-[var(--background)]";
+    const primaryBg =
+      variant === "white"
+        ? "bg-[var(--card)]"
+        : isDark
+          ? "bg-[var(--ink)]"
+          : "bg-[var(--accent)]";
+    const primaryText =
+      variant === "white"
+        ? "text-[var(--card-ink)]"
+        : isDark
+          ? "text-[var(--bg)]"
+          : "text-[var(--on-accent)]";
+    const hoverBg = isDark ? "bg-[var(--accent)]" : "bg-[var(--ink)]";
+    const hoverText = isDark ? "text-[var(--on-accent)]" : "text-[var(--bg)]";
 
     const content = (
       <>

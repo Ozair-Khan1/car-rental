@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Logo } from "@/components/ui/logo";
 
 const navLinks = [
   { name: "Cars", href: "/cars" },
@@ -53,21 +53,14 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-200 ease-out",
         isScrolled
-          ? "bg-[var(--background)] shadow-[4px_4px_0px_0px_var(--shadow-color)] py-4"
+          ? "bg-[var(--bg)] shadow-[4px_4px_0px_0px_var(--shadow)] border-b-2 border-[var(--border)] py-4"
           : "bg-transparent py-6 border-b border-transparent",
       )}
     >
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 relative z-50 -ml-1.5">
-            <Image
-              src="/logo.png"
-              alt="DriveNow"
-              width={160}
-              height={44}
-              className="h-11 sm:h-12 md:h-13 lg:h-14 w-auto object-contain hover:opacity-90 transition-opacity"
-              priority
-            />
+          <Link href="/" className="flex items-center gap-2 relative z-50 -ml-1.5" aria-label="DriveNow Home">
+            <Logo className="h-10 sm:h-11 md:h-12 w-auto" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
@@ -85,10 +78,10 @@ export function Navbar() {
                   className={cn(
                     "text-sm font-bold uppercase tracking-widest transition-colors relative py-1",
                     isCarsActive
-                      ? "text-black after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#E8B42A]"
+                      ? "text-[var(--ink)] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[var(--accent)]"
                       : isActive
-                        ? "text-[#e8b430] link-underline"
-                        : "text-[var(--text-primary)] hover:text-[#e8b430] link-underline",
+                        ? "text-[var(--accent)] link-underline"
+                        : "text-[var(--ink)] hover:text-[var(--accent)] link-underline",
                   )}
                 >
                   {link.name}
@@ -101,14 +94,14 @@ export function Navbar() {
             {status === "authenticated" ? (
               <Link
                 href="/dashboard"
-                className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)] hover:text-[#e8b430] transition-colors link-underline"
+                className="text-sm font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] transition-colors link-underline"
               >
                 Dashboard
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-bold uppercase tracking-widest text-[var(--text-primary)] hover:text-[#e8b430] transition-colors link-underline"
+                className="text-sm font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] transition-colors link-underline"
               >
                 Sign In
               </Link>
@@ -126,7 +119,7 @@ export function Navbar() {
           <div className="flex lg:hidden items-center gap-2 relative z-50">
             <ThemeToggle />
             <button
-              className="p-2 text-[var(--text-primary)]"
+              className="p-2 text-[var(--ink)]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -138,7 +131,7 @@ export function Navbar() {
 
       <div
         className={cn(
-          "fixed inset-0 top-[72px] z-40 bg-[var(--background)] p-6 h-[calc(100vh-72px)] overflow-y-auto border-t border-[var(--border)] transition-all duration-200 ease-out",
+          "fixed inset-0 top-[72px] z-40 bg-[var(--bg)] p-6 h-[calc(100vh-72px)] overflow-y-auto border-t-2 border-[var(--border)] transition-all duration-200 ease-out",
           isMobileMenuOpen
             ? "opacity-100 translate-y-0 visible"
             : "opacity-0 -translate-y-2 invisible",
@@ -167,8 +160,8 @@ export function Navbar() {
                     "text-3xl font-black uppercase tracking-tighter block w-full transition-colors",
                     link.href === "/cars" &&
                       (pathname === "/cars" || pathname.startsWith("/cars"))
-                      ? "text-black border-b-[3px] border-[#E8B42A] pb-1 w-fit"
-                      : "text-[var(--text-primary)] hover:text-[#e8b430]",
+                      ? "text-[var(--ink)] border-b-[3px] border-[var(--accent)] pb-1 w-fit"
+                      : "text-[var(--ink)] hover:text-[var(--accent)]",
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -185,7 +178,7 @@ export function Navbar() {
                 : "0ms",
             }}
             className={cn(
-              "h-1 w-full bg-[var(--text-primary)] my-6 origin-left transition-all duration-500 ease-out",
+              "h-[2px] w-full bg-[var(--border)] my-6 origin-left transition-all duration-500 ease-out",
               isMobileMenuOpen
                 ? "opacity-100 scale-x-100"
                 : "opacity-0 scale-x-0",
@@ -210,7 +203,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-2xl font-black uppercase text-[var(--text-primary)] hover:text-[#e8b430]"
+                  className="flex items-center gap-2 text-2xl font-black uppercase text-[var(--ink)] hover:text-[var(--accent)]"
                 >
                   <User size={24} />
                   Sign In
@@ -219,7 +212,7 @@ export function Navbar() {
                 <Link
                   href="/dashboard"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-2xl font-black uppercase text-[var(--text-primary)] hover:text-[#e8b430]"
+                  className="text-2xl font-black uppercase text-[var(--ink)] hover:text-[var(--accent)]"
                 >
                   Dashboard
                 </Link>

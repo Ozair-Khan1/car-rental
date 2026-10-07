@@ -18,11 +18,11 @@ export function VehicleCard({ vehicle, rentalDays }: VehicleCardProps) {
   const model = vehicle.model.replace(/-/g, "\u2011");
 
   return (
-    <div className="card-brutalist flex flex-col p-0 overflow-hidden h-full bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
+    <div className="card-brutalist flex flex-col p-0 overflow-hidden h-full bg-[var(--card)] text-[var(--card-ink)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)]">
       {/* Fixed aspect-ratio 16/10 image wrapper */}
       <Link
         href={`/cars/${vehicle.id}`}
-        className="w-full aspect-[16/10] relative border-b-2 border-black block group overflow-hidden shrink-0"
+        className="w-full aspect-[16/10] relative border-b-2 border-[var(--border)] block group overflow-hidden shrink-0"
       >
         <Image
           src={vehicle.images[0] || ""}
@@ -34,29 +34,29 @@ export function VehicleCard({ vehicle, rentalDays }: VehicleCardProps) {
       </Link>
 
       <div className="flex-1 flex flex-col p-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-500 mb-1.5">
+        <p className="text-[14px] font-bold uppercase tracking-wider text-[var(--muted)] mb-1.5">
           {vehicle.category}
         </p>
-        <h3 className="font-display font-normal text-[28px] tracking-normal uppercase text-black leading-tight mb-2.5 [text-wrap:balance]">
+        <h3 className="font-display font-normal text-[28px] tracking-normal uppercase text-[var(--card-ink)] leading-tight mb-2.5 [text-wrap:balance]">
           {brand} {model}
         </h3>
 
         {/* Specs on one line: sentence case, 14px, letter-spacing 0.02em, no wrapping */}
-        <div className="text-[14px] font-medium tracking-[0.02em] text-neutral-800 whitespace-nowrap overflow-hidden text-ellipsis mb-6">
+        <div className="text-[14px] font-medium tracking-[0.02em] text-[var(--muted)] whitespace-nowrap overflow-hidden text-ellipsis mb-6">
           {vehicle.seats} seats · {vehicle.transmission} · {vehicle.fuel}
         </div>
 
         {/* Bottom row pinned with mt-auto, price on left, BOOK button on right */}
-        <div className="mt-auto flex items-end justify-between gap-4 border-t-2 border-black pt-5">
+        <div className="mt-auto flex items-end justify-between gap-4 border-t-2 border-[var(--border)] pt-5">
           <div className="flex flex-col">
-            <span className="text-2xl md:text-3xl font-black text-black leading-none block mb-1">
+            <span className="text-2xl md:text-3xl font-black text-[var(--card-ink)] leading-none block mb-1">
               ${vehicle.dailyPrice}
             </span>
-            <span className="text-[13px] font-bold uppercase tracking-wider text-neutral-600 block">
+            <span className="text-[14px] font-bold uppercase tracking-wider text-[var(--muted)] block">
               PER DAY
             </span>
             {totalPrice !== null && rentalDays && (
-              <span className="text-[12px] font-bold text-black uppercase tracking-wider block mt-1.5">
+              <span className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider block mt-1.5">
                 {rentalDays} {rentalDays === 1 ? "day" : "days"} · ${totalPrice}
               </span>
             )}

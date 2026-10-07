@@ -286,7 +286,7 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
           } relative z-10 ${isMobile ? "pl-8" : "mb-8 md:mb-0"}`}
         >
           {/* City Name */}
-          <h3 className="font-display text-[36px] uppercase leading-none tracking-tight mb-4">
+          <h3 className="font-display text-[36px] uppercase leading-none tracking-tight mb-4 text-[var(--ink)]">
             {loc.city}
           </h3>
 
@@ -295,16 +295,16 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
             ref={(el) => {
               if (el) imgRefs.current[index] = el;
             }}
-            className="border-2 border-black border-b-0 bg-black aspect-[16/10] relative group overflow-hidden shadow-[4px_0px_0px_0px_#000000]"
+            className="border-2 border-[var(--border)] border-b-0 bg-[var(--card)] aspect-[16/10] relative group overflow-hidden shadow-[4px_0px_0px_0px_var(--shadow)]"
           >
             {/* Mobile Node aligned to image center */}
             {isMobile && (
-              <div className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2 h-2 bg-black border border-black z-20"></div>
+              <div className="absolute -left-[20px] top-1/2 -translate-y-1/2 w-2 h-2 bg-[var(--border)] border border-[var(--border)] z-20"></div>
             )}
 
-            <div className="absolute inset-0 bg-[#1a1a1a]"></div>
+            <div className="absolute inset-0 bg-[var(--card)]"></div>
             {/* Fallback label */}
-            <span className="absolute inset-0 flex items-center justify-center text-white/20 font-display text-4xl uppercase text-center px-4">
+            <span className="absolute inset-0 flex items-center justify-center text-[var(--muted)]/20 font-display text-4xl uppercase text-center px-4">
               {loc.city}
             </span>
 
@@ -321,14 +321,14 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
             />
           </div>
 
-          {/* Attached White Info Panel Directly Below Image */}
-          <div className="bg-white border-2 border-black p-5 flex flex-col gap-3 shadow-[4px_4px_0px_0px_#000000] relative z-10">
+          {/* Attached White/Card Info Panel Directly Below Image */}
+          <div className="bg-[var(--card)] text-[var(--card-ink)] border-2 border-[var(--border)] p-5 flex flex-col gap-3 shadow-[4px_4px_0px_0px_var(--shadow)] relative z-10">
             {/* Row 2: Cars Available */}
             <div className="flex items-baseline justify-between gap-3">
-              <span className="text-[13px] font-mono font-bold uppercase text-[var(--text-secondary,#666666)] tracking-wider shrink-0">
+              <span className="text-[14px] font-mono font-bold uppercase text-[var(--muted)] tracking-wider shrink-0">
                 CARS AVAILABLE
               </span>
-              <span className="text-[16px] font-bold text-black font-mono text-right">
+              <span className="text-[16px] font-bold text-[var(--card-ink)] font-mono text-right">
                 [00]
               </span>
             </div>
@@ -364,12 +364,12 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
   };
 
   return (
-    <section className="py-16 md:py-24 relative z-10 bg-[var(--surface)] border-2 border-black shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+    <section className="py-16 md:py-24 relative z-10">
       <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-16 md:mb-24 gap-4">
           <h2 className="text-h2">Where you can pick up and go.</h2>
           {countryName && (
-            <div className="inline-flex items-center gap-2 self-start sm:self-auto bg-[#E8B42A] text-black px-3 py-1.5 border-2 border-black font-mono text-[19px] font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_#000000]">
+            <div className="inline-flex items-center gap-2 self-start sm:self-auto bg-[var(--accent)] text-[var(--on-accent)] px-3 py-1.5 border-2 border-[var(--border)] font-mono text-[19px] font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_var(--shadow)]">
               <span>{countryName}</span>
             </div>
           )}
@@ -394,7 +394,7 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
                     }}
                     d={pathData}
                     fill="none"
-                    stroke="black"
+                    stroke="var(--shadow)"
                     transform="translate(4, 4)"
                     strokeWidth="4"
                     strokeLinecap="butt"
@@ -407,7 +407,7 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
                     }}
                     d={pathData}
                     fill="none"
-                    stroke="black"
+                    stroke="var(--border)"
                     strokeWidth="3"
                     strokeLinecap="butt"
                     strokeLinejoin="miter"
@@ -419,7 +419,7 @@ export function LocationsZigzag({ initialLocations }: LocationsZigzagProps) {
                     }}
                     d={pathData}
                     fill="none"
-                    stroke="#E8B42A"
+                    stroke="var(--location-line)"
                     strokeWidth="4"
                     strokeLinecap="butt"
                     strokeLinejoin="miter"

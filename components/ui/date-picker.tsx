@@ -175,14 +175,14 @@ export function DatePicker({
         <div
           ref={dropdownRef}
           style={{ position: "absolute", top: position.top, left: position.left, zIndex: 9999 }}
-          className="bg-[var(--surface)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)] p-4 w-[300px] select-none"
+          className="bg-[var(--card)] text-[var(--card-ink)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)] p-4 w-[300px] select-none"
         >
           {/* Header: month/year + nav arrows */}
           <div className="flex items-center justify-between mb-4">
             <button
               type="button"
               onClick={prevMonth}
-              className="w-8 h-8 flex items-center justify-center border-2 border-[var(--border)] hover:bg-[var(--btn-primary-bg)] transition-colors"
+              className="w-8 h-8 flex items-center justify-center border-2 border-[var(--border)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)] transition-colors"
             >
               <ChevronLeft size={16} />
             </button>
@@ -192,7 +192,7 @@ export function DatePicker({
             <button
               type="button"
               onClick={nextMonth}
-              className="w-8 h-8 flex items-center justify-center border-2 border-[var(--border)] hover:bg-[var(--btn-primary-bg)] transition-colors"
+              className="w-8 h-8 flex items-center justify-center border-2 border-[var(--border)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)] transition-colors"
             >
               <ChevronRight size={16} />
             </button>
@@ -203,7 +203,7 @@ export function DatePicker({
             {DAYS.map((d) => (
               <div
                 key={d}
-                className="text-center text-[11px] font-bold uppercase tracking-wider py-1 opacity-50"
+                className="text-center text-[12px] font-bold uppercase tracking-wider py-1 text-[var(--muted)]"
               >
                 {d}
               </div>
@@ -224,9 +224,9 @@ export function DatePicker({
                   disabled={disabled}
                   onClick={() => handleSelect(cell.date)}
                   className={`
-                    w-full aspect-square flex items-center justify-center text-[13px] font-medium transition-all relative
-                    ${disabled ? "opacity-30 cursor-default" : "cursor-pointer hover:bg-[var(--btn-primary-bg)] hover:text-black"}
-                    ${selected ? "bg-[var(--btn-primary-bg)] text-black font-bold shadow-[2px_2px_0px_0px_var(--shadow-color)] border-2 border-[var(--border)]" : ""}
+                    w-full aspect-square flex items-center justify-center text-[14px] font-medium transition-all relative
+                    ${disabled ? "opacity-40 cursor-default text-[var(--muted)]" : "cursor-pointer hover:bg-[var(--accent)] hover:text-[var(--on-accent)] text-[var(--card-ink)]"}
+                    ${selected ? "bg-[var(--accent)] text-[var(--on-accent)] font-bold shadow-[2px_2px_0px_0px_var(--shadow)] border-2 border-[var(--border)]" : ""}
                     ${todayCell && !selected ? "border-2 border-[var(--border)] font-bold" : ""}
                     ${!selected && !todayCell ? "border border-transparent" : ""}
                   `}
@@ -245,14 +245,14 @@ export function DatePicker({
                 onChange("");
                 setIsOpen(false);
               }}
-              className="text-[12px] font-bold uppercase tracking-wider hover:text-[var(--btn-primary-bg)] transition-colors"
+              className="text-[14px] font-bold uppercase tracking-wider text-[var(--card-ink)] hover:text-[var(--accent)] transition-colors"
             >
               Clear
             </button>
             <button
               type="button"
               onClick={() => handleSelect(today)}
-              className="text-[12px] font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-black px-3 py-1 border-2 border-[var(--border)] shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_var(--shadow-color)] transition-all"
+              className="text-[14px] font-bold uppercase tracking-wider bg-[var(--accent)] text-[var(--on-accent)] px-3 py-1 border-2 border-[var(--border)] shadow-[2px_2px_0px_0px_var(--shadow)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_var(--shadow)] transition-all"
             >
               Today
             </button>
@@ -274,10 +274,10 @@ export function DatePicker({
         }}
         className="input-field w-full text-left flex items-center justify-between gap-2 cursor-pointer"
       >
-        <span className={value ? "" : "opacity-50"}>
+        <span className={value ? "text-[var(--card-ink)]" : "text-[var(--muted)]"}>
           {value ? formatDisplay(value) : placeholder}
         </span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 opacity-60">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[var(--muted)]">
           <rect x="2" y="3" width="12" height="11" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none" />
           <line x1="2" y1="6" x2="14" y2="6" stroke="currentColor" strokeWidth="1.5" />
           <line x1="5" y1="1.5" x2="5" y2="4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

@@ -74,7 +74,7 @@ export function ProcessSection() {
             </Reveal>
 
             <Reveal>
-              <p className="text-lg font-medium text-[var(--text-primary)]">
+              <p className="text-lg font-medium text-[var(--muted)]">
                 Three steps from search to keys.
               </p>
             </Reveal>
@@ -91,8 +91,8 @@ export function ProcessSection() {
                       transition-all duration-200
                       ${
                         activeStep === i
-                          ? "bg-[var(--btn-primary-bg)] text-black shadow-[4px_4px_0px_0px_var(--shadow-color)]"
-                          : "bg-[var(--surface)] text-[var(--text-primary)]"
+                          ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-[4px_4px_0px_0px_var(--shadow)]"
+                          : "bg-[var(--card)] text-[var(--card-ink)]"
                       }
                     `}
                   >
@@ -104,17 +104,17 @@ export function ProcessSection() {
 
             {/* What to bring card */}
             <Reveal>
-              <div className="bg-[var(--btn-primary-bg)] border-2 border-[var(--border)] shadow-[6px_6px_0px_0px_var(--shadow-color)] p-6">
-                <h3 className="font-display text-2xl uppercase tracking-wider text-black mb-4">
+              <div className="bg-[var(--accent)] border-2 border-[var(--border)] shadow-[6px_6px_0px_0px_var(--shadow)] p-6">
+                <h3 className="font-display text-2xl uppercase tracking-wider text-[var(--on-accent)] mb-4">
                   What to bring
                 </h3>
                 <ul className="flex flex-col gap-3">
                   {CHECKLIST.map((item) => (
                     <li
                       key={item}
-                      className="flex items-center gap-3 text-black"
+                      className="flex items-center gap-3 text-[var(--on-accent)]"
                     >
-                      <span className="w-2.5 h-2.5 bg-black shrink-0" />
+                      <span className="w-2.5 h-2.5 bg-[var(--on-accent)] shrink-0" />
                       <span className="text-[15px] font-medium">{item}</span>
                     </li>
                   ))}
@@ -151,12 +151,14 @@ export function ProcessSection() {
                     className="card-brutalist flex gap-6 items-start"
                     data-step={i}
                   >
-                    <span className="w-14 shrink-0 text-h3 text-[var(--icon)]">
+                    <span className="w-14 shrink-0 text-h3 text-[var(--accent)]">
                       {step.num}
                     </span>
                     <div>
-                      <h3 className="text-h3 mb-3">{step.title}</h3>
-                      <p className="text-[17px] leading-relaxed max-w-lg text-[var(--text-primary)]">
+                      <h3 className="text-h3 mb-3 text-[var(--card-ink)]">
+                        {step.title}
+                      </h3>
+                      <p className="text-[17px] leading-relaxed max-w-lg text-[var(--muted)]">
                         {step.text}
                       </p>
                     </div>

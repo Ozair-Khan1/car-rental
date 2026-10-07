@@ -211,17 +211,17 @@ function CarsContent() {
   };
 
   return (
-    <div className="pt-28 pb-24 min-h-screen flex flex-col font-sans relative selection:bg-[var(--text-primary)] selection:text-[var(--background)] overflow-x-hidden">
+    <div className="pt-28 pb-24 min-h-screen flex flex-col font-sans relative selection:bg-[var(--ink)] selection:text-[var(--bg)] overflow-x-hidden">
       {/* Container aligned with navbar, header, datebar, cards and footer (max-width 1200px, px-4 md:px-6, centered) */}
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 relative z-10 flex flex-col gap-8">
         {/* 1. PAGE HEADER */}
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6 pt-4">
           <div className="flex flex-col">
-            <h1 className="font-display font-normal text-[clamp(56px,7vw,96px)] leading-[0.95] tracking-normal uppercase text-black m-0 p-0">
+            <h1 className="font-display font-normal text-[clamp(56px,7vw,96px)] leading-[0.95] tracking-normal uppercase text-[var(--ink)] m-0 p-0">
               FLEET
             </h1>
             {/* 12px space between FLEET and subtitle line */}
-            <p className="text-[14px] font-bold uppercase tracking-widest text-black opacity-70 mt-3 m-0 leading-none">
+            <p className="text-[14px] font-bold uppercase tracking-widest text-[var(--muted)] mt-3 m-0 leading-none">
               {filteredVehicles.length} vehicles available
             </p>
           </div>
@@ -230,7 +230,7 @@ function CarsContent() {
           <div className="w-full md:w-[320px] lg:w-[360px] relative flex gap-3 self-end md:self-auto">
             <div className="relative flex-1">
               <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-black opacity-60"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"
                 size={18}
               />
               <input
@@ -238,12 +238,12 @@ function CarsContent() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search brand or model..."
-                className="w-full pl-11 pr-4 h-[52px] bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000] text-[16px] text-black font-medium placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#E8B42A]"
+                className="w-full pl-11 pr-4 h-[52px] bg-[var(--card)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)] text-[16px] text-[var(--card-ink)] font-medium placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
             </div>
             <button
               type="button"
-              className="md:hidden shrink-0 h-[52px] px-5 border-2 border-black bg-white text-black font-bold uppercase shadow-[4px_4px_0px_0px_#000000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center"
+              className="md:hidden shrink-0 h-[52px] px-5 border-2 border-[var(--border)] bg-[var(--card)] text-[var(--card-ink)] font-bold uppercase shadow-[4px_4px_0px_0px_var(--shadow)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center"
               onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
               aria-label="Toggle filters"
             >
@@ -271,25 +271,25 @@ function CarsContent() {
             )}
           >
             <div>
-              {/* Heading FILTERS (display font, weight 400, 22px, uppercase, black) + CLEAR ALL */}
+              {/* Heading FILTERS + CLEAR ALL */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-display font-normal text-[22px] uppercase text-black m-0 leading-none tracking-normal">
+                <h2 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 leading-none tracking-normal">
                   Filters
                 </h2>
                 {isFilterActive && (
                   <button
                     type="button"
                     onClick={clearAllFilters}
-                    className="text-[12px] font-black uppercase tracking-wider text-black underline hover:text-[#E8B42A] transition-colors"
+                    className="text-[14px] font-black uppercase tracking-wider text-[var(--ink)] underline hover:text-[var(--accent)] transition-colors"
                   >
                     CLEAR ALL
                   </button>
                 )}
               </div>
 
-              {/* GROUP 1: TYPE (compact 2 columns, 8px gap, 40px tall boxes, 14px text, ALL spanning full width) */}
+              {/* GROUP 1: TYPE */}
               <div>
-                <h3 className="font-display font-normal text-[22px] uppercase text-black m-0 mb-4 leading-none tracking-normal">
+                <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 mb-4 leading-none tracking-normal">
                   Type
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -302,11 +302,11 @@ function CarsContent() {
                         type="button"
                         onClick={() => setActiveCategory(category)}
                         className={cn(
-                          "h-[40px] px-3 flex items-center justify-between text-left border-2 border-black font-bold uppercase text-[14px] tracking-wider transition-all select-none shadow-[2px_2px_0px_0px_#000000]",
+                          "h-[40px] px-3 flex items-center justify-between text-left border-2 border-[var(--border)] font-bold uppercase text-[14px] tracking-wider transition-all select-none shadow-[2px_2px_0px_0px_var(--shadow)]",
                           isAll ? "col-span-2" : "col-span-1",
                           isActive
-                            ? "bg-black text-[#F4F2EC]"
-                            : "bg-white text-black hover:bg-[#E8B42A] hover:text-black",
+                            ? "bg-[var(--ink)] text-[var(--bg)]"
+                            : "bg-[var(--card)] text-[var(--card-ink)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)]",
                         )}
                       >
                         <span>{category}</span>
@@ -323,12 +323,12 @@ function CarsContent() {
                 </div>
               </div>
 
-              {/* 2px black divider with 24px spacing */}
-              <div className="w-full h-[2px] bg-black my-6" />
+              {/* 2px divider */}
+              <div className="w-full h-[2px] bg-[var(--border)] my-6" />
 
               {/* GROUP 2: TRANSMISSION */}
               <div>
-                <h3 className="font-display font-normal text-[22px] uppercase text-black m-0 mb-4 leading-none tracking-normal">
+                <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 mb-4 leading-none tracking-normal">
                   Transmission
                 </h3>
                 <div className="flex flex-col gap-3">
@@ -341,21 +341,21 @@ function CarsContent() {
                       >
                         <div
                           className={cn(
-                            "w-[22px] h-[22px] border-2 border-black flex items-center justify-center transition-colors shrink-0",
+                            "w-[22px] h-[22px] border-2 border-[var(--border)] flex items-center justify-center transition-colors shrink-0",
                             isChecked
-                              ? "bg-[#E8B42A] text-black"
-                              : "bg-white text-transparent group-hover:border-black",
+                              ? "bg-[var(--accent)] text-[var(--on-accent)]"
+                              : "bg-[var(--card)] text-transparent group-hover:border-[var(--border)]",
                           )}
                         >
                           {isChecked && (
                             <Check
                               size={15}
                               strokeWidth={3.5}
-                              className="text-black"
+                              className="text-[var(--on-accent)]"
                             />
                           )}
                         </div>
-                        <span className="text-[15px] font-bold uppercase tracking-wider text-black">
+                        <span className="text-[15px] font-bold uppercase tracking-wider text-[var(--ink)]">
                           {trans}
                         </span>
                         <input
@@ -376,12 +376,12 @@ function CarsContent() {
                 </div>
               </div>
 
-              {/* 2px black divider with 24px spacing */}
-              <div className="w-full h-[2px] bg-black my-6" />
+              {/* 2px divider */}
+              <div className="w-full h-[2px] bg-[var(--border)] my-6" />
 
               {/* GROUP 3: FUEL */}
               <div>
-                <h3 className="font-display font-normal text-[22px] uppercase text-black m-0 mb-4 leading-none tracking-normal">
+                <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 mb-4 leading-none tracking-normal">
                   Fuel
                 </h3>
                 <div className="flex flex-col gap-3">
@@ -394,21 +394,21 @@ function CarsContent() {
                       >
                         <div
                           className={cn(
-                            "w-[22px] h-[22px] border-2 border-black flex items-center justify-center transition-colors shrink-0",
+                            "w-[22px] h-[22px] border-2 border-[var(--border)] flex items-center justify-center transition-colors shrink-0",
                             isChecked
-                              ? "bg-[#E8B42A] text-black"
-                              : "bg-white text-transparent group-hover:border-black",
+                              ? "bg-[var(--accent)] text-[var(--on-accent)]"
+                              : "bg-[var(--card)] text-transparent group-hover:border-[var(--border)]",
                           )}
                         >
                           {isChecked && (
                             <Check
                               size={15}
                               strokeWidth={3.5}
-                              className="text-black"
+                              className="text-[var(--on-accent)]"
                             />
                           )}
                         </div>
-                        <span className="text-[15px] font-bold uppercase tracking-wider text-black">
+                        <span className="text-[15px] font-bold uppercase tracking-wider text-[var(--ink)]">
                           {fuel}
                         </span>
                         <input
@@ -425,16 +425,16 @@ function CarsContent() {
                 </div>
               </div>
 
-              {/* 2px black divider with 24px spacing */}
-              <div className="w-full h-[2px] bg-black my-6" />
+              {/* 2px divider */}
+              <div className="w-full h-[2px] bg-[var(--border)] my-6" />
 
               {/* GROUP 4: PRICE */}
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-display font-normal text-[22px] uppercase text-black m-0 leading-none tracking-normal">
+                  <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 leading-none tracking-normal">
                     Price
                   </h3>
-                  <span className="text-[13px] font-bold text-black uppercase tracking-wider">
+                  <span className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
                     ≤ ${maxPrice}/day
                   </span>
                 </div>
@@ -445,9 +445,9 @@ function CarsContent() {
                   step={10}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-black cursor-pointer h-2 bg-neutral-200 border border-black rounded-none"
+                  className="w-full accent-[var(--accent)] cursor-pointer h-2 bg-[var(--card)] border border-[var(--border)] rounded-none"
                 />
-                <div className="flex justify-between text-xs font-bold text-neutral-600 mt-2">
+                <div className="flex justify-between text-[14px] font-bold text-[var(--muted)] mt-2">
                   <span>$60</span>
                   <span>$300</span>
                 </div>
@@ -464,14 +464,14 @@ function CarsContent() {
                 {activeChips.map((chip) => (
                   <div
                     key={chip.id}
-                    className="inline-flex items-center gap-2 bg-white border-2 border-black px-3 py-1 text-[14px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0px_0px_#000000]"
+                    className="inline-flex items-center gap-2 bg-[var(--card)] border-2 border-[var(--border)] px-3 py-1 text-[14px] font-bold uppercase tracking-wider text-[var(--card-ink)] shadow-[2px_2px_0px_0px_var(--shadow)]"
                   >
                     <span>{chip.label}</span>
                     <button
                       type="button"
                       onClick={chip.onRemove}
                       aria-label={`Remove filter ${chip.label}`}
-                      className="hover:text-[#E8B42A] transition-colors p-0.5"
+                      className="hover:text-[var(--accent)] transition-colors p-0.5"
                     >
                       <X size={14} strokeWidth={3} />
                     </button>
@@ -479,17 +479,17 @@ function CarsContent() {
                 ))}
               </div>
 
-              {/* Sort Segmented Control (active = black, no native select) */}
+              {/* Sort Segmented Control */}
               <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
-                <div className="inline-flex border-2 border-black shadow-[2px_2px_0px_0px_#000000] bg-white">
+                <div className="inline-flex border-2 border-[var(--border)] shadow-[2px_2px_0px_0px_var(--shadow)] bg-[var(--card)]">
                   <button
                     type="button"
                     onClick={() => setSortBy("low-to-high")}
                     className={cn(
-                      "px-3 py-2 text-[12px] sm:text-[13px] font-bold uppercase tracking-wider transition-colors border-r-2 border-black",
+                      "px-3 py-2 text-[14px] font-bold uppercase tracking-wider transition-colors border-r-2 border-[var(--border)]",
                       sortBy === "low-to-high"
-                        ? "bg-black text-[#F4F2EC]"
-                        : "bg-white text-black hover:bg-neutral-100",
+                        ? "bg-[var(--ink)] text-[var(--bg)]"
+                        : "bg-[var(--card)] text-[var(--card-ink)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)]",
                     )}
                   >
                     PRICE: LOW TO HIGH
@@ -498,10 +498,10 @@ function CarsContent() {
                     type="button"
                     onClick={() => setSortBy("high-to-low")}
                     className={cn(
-                      "px-3 py-2 text-[12px] sm:text-[13px] font-bold uppercase tracking-wider transition-colors",
+                      "px-3 py-2 text-[14px] font-bold uppercase tracking-wider transition-colors",
                       sortBy === "high-to-low"
-                        ? "bg-black text-[#F4F2EC]"
-                        : "bg-white text-black hover:bg-neutral-100",
+                        ? "bg-[var(--ink)] text-[var(--bg)]"
+                        : "bg-[var(--card)] text-[var(--card-ink)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)]",
                     )}
                   >
                     PRICE: HIGH TO LOW
@@ -512,14 +512,14 @@ function CarsContent() {
 
             {/* 5. VEHICLE CARDS GRID: 2 columns on desktop (3 only if card area >= 1080px), 1 on mobile */}
             {filteredVehicles.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-12 card-brutalist bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
-                <div className="w-16 h-16 border-2 border-black bg-[#E8B42A] flex items-center justify-center mb-6 text-black shadow-[3px_3px_0px_0px_#000000]">
+              <div className="h-full flex flex-col items-center justify-center text-center p-12 card-brutalist bg-[var(--card)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)]">
+                <div className="w-16 h-16 border-2 border-[var(--border)] bg-[var(--accent)] flex items-center justify-center mb-6 text-[var(--on-accent)] shadow-[3px_3px_0px_0px_var(--shadow)]">
                   <Search size={28} strokeWidth={3} />
                 </div>
-                <h3 className="font-display font-normal text-3xl uppercase tracking-normal text-black mb-3">
+                <h3 className="font-display font-normal text-3xl uppercase tracking-normal text-[var(--card-ink)] mb-3">
                   NO VEHICLES FOUND
                 </h3>
-                <p className="text-sm font-medium text-black opacity-70 mb-8 max-w-md">
+                <p className="text-sm font-medium text-[var(--muted)] mb-8 max-w-md">
                   We couldn't find any cars matching your current filters. Try
                   adjusting them or clearing all filters.
                 </p>

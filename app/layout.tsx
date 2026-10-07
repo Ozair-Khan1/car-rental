@@ -36,18 +36,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var dark=t==='dark'||(!t&&d);var el=document.documentElement;if(dark){el.setAttribute('data-theme','dark');el.classList.add('dark');}else{el.setAttribute('data-theme','light');el.classList.remove('dark');}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body
-        className={`${fontSans.variable} ${fontDisplay.variable} font-sans antialiased min-h-screen flex flex-col bg-[var(--background)] text-[var(--text-primary)]`}
+        className={`${fontSans.variable} ${fontDisplay.variable} font-sans antialiased min-h-screen flex flex-col bg-[var(--bg)] text-[var(--ink)]`}
       >
         <SessionProvider>
           <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
+            attribute="data-theme"
+            defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
             {/* Global Cream Grid Background across entire page and footer */}
-            <div className="fixed inset-0 opacity-50 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
+            <div className="fixed inset-0 pointer-events-none z-0 animate-grid bg-[linear-gradient(to_right,var(--grid)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid)_1px,transparent_1px)] bg-[size:40px_40px]" />
             <Toaster position="top-center" richColors />
             <Navbar />
             <main className="flex-1 relative z-10">{children}</main>

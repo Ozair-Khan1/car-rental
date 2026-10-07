@@ -1,20 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-tertiary: var(--text-tertiary);
+  --color-background: var(--bg);
+  --color-surface: var(--card);
+  --color-text-primary: var(--ink);
+  --color-text-secondary: var(--ink);
+  --color-text-tertiary: var(--muted);
   --color-border: var(--border);
-  --color-border-hover: var(--border-hover);
-  --color-icon: var(--icon);
+  --color-border-hover: var(--accent);
+  --color-icon: var(--accent);
+
+  /* Theme Tokens */
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-card: var(--card);
+  --color-card-ink: var(--card-ink);
+  --color-shadow: var(--shadow);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
 
   /* Buttons */
-  --color-btn-primary-bg: var(--btn-primary-bg);
-  --color-btn-primary-text: var(--btn-primary-text);
-  --color-btn-primary-hover: var(--btn-primary-hover);
-  --color-btn-secondary-border: var(--btn-secondary-border);
+  --color-btn-primary-bg: var(--accent);
+  --color-btn-primary-text: var(--on-accent);
+  --color-btn-primary-hover: var(--accent);
+  --color-btn-secondary-border: var(--border);
 
   /* Typography */
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -36,58 +46,71 @@
 
 :root {
   /* Light Theme Palette */
-  --background: #F4F3ED;
-  --surface: #FFFFFF;
-  
-  --border: #000000;
-  --border-hover: #e8b430;
-  
-  --text-primary: #000000;
-  --text-secondary: #000000;
-  --text-tertiary: rgba(0, 0, 0, 0.6);
-  
-  --icon: #e8b430;
-  
-  /* Buttons */
-  --btn-primary-bg: #e8b430;
-  --btn-primary-text: #000000;
-  --btn-primary-hover: #e8b430;
-  --btn-secondary-border: #000000;
-  
-  /* Shadows */
-  --shadow-color: #000000;
-  --grid-color: rgba(0, 0, 0, 0.1);
+  --bg: #F4F2EC;
+  --ink: #0A0A0A;
+  --card: #FFFFFF;
+  --card-ink: #0A0A0A;
+  --border: #0A0A0A;
+  --shadow: #0A0A0A;
+  --muted: rgba(10, 10, 10, 0.7);
+  --grid: rgba(10, 10, 10, 0.12);
+  --accent: #E8B42A;
+  --on-accent: #0A0A0A;
+  --location-line: var(--ink);
+  --faq-hover: #8A6200; /* WCAG AA 4.5:1+ against #F4F2EC */
+
+  /* Legacy mappings */
+  --background: var(--bg);
+  --surface: var(--card);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink);
+  --text-tertiary: var(--muted);
+  --icon: var(--accent);
+  --btn-primary-bg: var(--accent);
+  --btn-primary-text: var(--on-accent);
+  --btn-primary-hover: var(--accent);
+  --btn-secondary-border: var(--border);
+  --shadow-color: var(--shadow);
+  --grid-color: var(--grid);
 }
 
+:root[data-theme="dark"],
+:root.dark,
+[data-theme="dark"],
 .dark {
   /* Dark Theme Palette */
-  --background: #000000;
-  --surface: #000000;
-  
-  --border: #FFFFFF;
-  --border-hover: #e8b430;
-  
-  --text-primary: #FFFFFF;
-  --text-secondary: #FFFFFF;
-  --text-tertiary: rgba(255, 255, 255, 0.6);
-  
-  --icon: #e8b430;
-  
-  /* Buttons */
-  --btn-primary-bg: #e8b430;
-  --btn-primary-text: #000000;
-  --btn-primary-hover: #e8b430;
-  --btn-secondary-border: #FFFFFF;
-  
-  /* Shadows */
-  --shadow-color: #FFFFFF;
-  --grid-color: rgba(255, 255, 255, 0.1);
+  --bg: #0A0A0A;
+  --ink: #F4F2EC;
+  --card: #141414;
+  --card-ink: #F4F2EC;
+  --border: #F4F2EC;
+  --shadow: #F4F2EC;
+  --muted: rgba(244, 242, 236, 0.72);
+  --grid: rgba(244, 242, 236, 0.07);
+  --accent: #E8B42A;
+  --on-accent: #0A0A0A;
+  --location-line: var(--accent);
+  --faq-hover: var(--accent);
+
+  /* Legacy mappings */
+  --background: var(--bg);
+  --surface: var(--card);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink);
+  --text-tertiary: var(--muted);
+  --icon: var(--accent);
+  --btn-primary-bg: var(--accent);
+  --btn-primary-text: var(--on-accent);
+  --btn-primary-hover: var(--accent);
+  --btn-secondary-border: var(--border);
+  --shadow-color: var(--shadow);
+  --grid-color: var(--grid);
 }
 
 @layer base {
   body {
-    background-color: var(--background);
-    color: var(--text-primary);
+    background-color: var(--bg);
+    color: var(--ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -125,17 +148,17 @@
   .text-body { 
     font-size: var(--text-body); 
     line-height: 1.6; 
-    color: var(--text-secondary);
+    color: var(--ink);
   }
   .text-small { 
     font-size: var(--text-small); 
     line-height: 1.6; 
-    color: var(--text-tertiary);
+    color: var(--muted);
   }
 
   /* Focus rings */
   *:focus-visible {
-    outline: 2px solid var(--text-primary);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
     transition: none;
   }
@@ -150,76 +173,76 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] font-semibold px-6 py-3 border border-[var(--btn-primary-bg)];
-    box-shadow: 2px 2px 0px 0px var(--btn-primary-bg);
+    @apply inline-flex items-center justify-center bg-[var(--accent)] text-[var(--on-accent)] font-semibold px-6 py-3 border-2 border-[var(--border)];
+    box-shadow: 2px 2px 0px 0px var(--shadow);
     transition: transform 150ms ease-out, box-shadow 150ms ease-out;
   }
   .btn-primary:hover {
     transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px 0px var(--btn-primary-bg);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
   }
   .btn-primary:active {
     transform: translate(2px, 2px);
   }
   
   .btn-secondary {
-    @apply inline-flex items-center justify-center bg-transparent border border-[var(--btn-secondary-border)] text-[var(--text-primary)] font-semibold px-6 py-3;
-    box-shadow: 2px 2px 0px 0px var(--btn-secondary-border);
+    @apply inline-flex items-center justify-center bg-transparent border-2 border-[var(--border)] text-[var(--ink)] font-semibold px-6 py-3;
+    box-shadow: 2px 2px 0px 0px var(--shadow);
     transition: transform 150ms ease-out, box-shadow 150ms ease-out;
   }
   .btn-secondary:hover {
     transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px 0px var(--btn-secondary-border);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
   }
   .btn-secondary:active {
     transform: translate(2px, 2px);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center bg-transparent text-[var(--text-primary)] font-semibold px-6 py-3 border border-transparent;
+    @apply inline-flex items-center justify-center bg-transparent text-[var(--ink)] font-semibold px-6 py-3 border border-transparent;
     transition: transform 150ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out;
   }
   .btn-ghost:hover {
-    @apply border-[var(--btn-secondary-border)];
-    box-shadow: 2px 2px 0px 0px var(--btn-secondary-border);
+    @apply border-[var(--border)];
+    box-shadow: 2px 2px 0px 0px var(--shadow);
     transform: translate(-2px, -2px);
   }
   .btn-ghost:active {
     transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px 0px var(--btn-secondary-border);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
   }
 
   /* Brutalist Cards */
   .card-brutalist {
-    @apply bg-[var(--surface)] border-2 border-[var(--border)] p-6 md:p-8 transition-all;
-    box-shadow: 4px 4px 0px 0px var(--shadow-color);
+    @apply bg-[var(--card)] text-[var(--card-ink)] border-2 border-[var(--border)] p-6 md:p-8 transition-all;
+    box-shadow: 4px 4px 0px 0px var(--shadow);
   }
   .card-brutalist:hover {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px 0px var(--shadow-color);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
   }
   
   .card-brutalist.card-light-hover:hover {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px 0px var(--shadow-color);
+    box-shadow: 2px 2px 0px 0px var(--shadow);
   }
   @media (prefers-reduced-motion: reduce) {
     .card-brutalist.card-light-hover:hover {
       transform: none;
-      box-shadow: 4px 4px 0px 0px var(--shadow-color);
+      box-shadow: 4px 4px 0px 0px var(--shadow);
     }
   }
   
   .card-brutalist-yellow {
-    @apply bg-[var(--btn-primary-bg)] border border-[var(--btn-primary-bg)] p-6 md:p-8 transition-all text-black;
-    box-shadow: 4px 4px 0px 0px var(--btn-primary-bg);
+    @apply bg-[var(--accent)] text-[var(--on-accent)] border-2 border-[var(--border)] p-6 md:p-8 transition-all;
+    box-shadow: 4px 4px 0px 0px var(--shadow);
   }
   .card-brutalist-yellow:hover {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px 0px var(--btn-primary-bg);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
   }
   .card-brutalist-yellow * {
-    @apply text-black;
+    @apply text-[var(--on-accent)];
   }
 
   /* Animated Link Underline */
@@ -254,24 +277,25 @@
   }
 
   .input-field {
-    @apply bg-[var(--surface)] text-[var(--text-primary)] px-4 py-3 border-2 border-[var(--border)] transition-all focus:outline-none focus:ring-0;
+    @apply bg-[var(--card)] text-[var(--card-ink)] px-4 py-3 border-2 border-[var(--border)] transition-all focus:outline-none focus:ring-0;
     box-shadow: none;
   }
   .input-field::placeholder {
-    color: var(--text-tertiary);
+    color: var(--muted);
   }
   .input-field:focus {
     transform: none;
-    box-shadow: 4px 4px 0px 0px var(--shadow-color);
+    box-shadow: 4px 4px 0px 0px var(--shadow);
   }
 
   /* ─── Date Picker / Calendar Theme ─── */
   input[type="date"] {
-    accent-color: #e8b430;
+    accent-color: var(--accent);
     color-scheme: light;
   }
 
-  .dark input[type="date"] {
+  .dark input[type="date"],
+  :root[data-theme="dark"] input[type="date"] {
     color-scheme: dark;
   }
 

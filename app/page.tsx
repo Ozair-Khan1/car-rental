@@ -229,7 +229,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col w-full selection:bg-[var(--text-primary)] selection:text-[var(--background)] overflow-x-hidden relative">
+    <div className="flex flex-col w-full selection:bg-[var(--ink)] selection:text-[var(--bg)] overflow-x-hidden relative">
       {/* HERO SECTION */}
       <section
         ref={heroRef}
@@ -238,7 +238,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px] relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between mb-8 relative">
             <div className="max-w-2xl lg:w-[60%] relative z-20 text-content">
-              <h1 className="text-display mb-6 text-[var(--text-primary)] flex flex-col">
+              <h1 className="text-display mb-6 text-[var(--ink)] flex flex-col">
                 <span className="hero-title-1 block overflow-hidden">
                   <span className="block">Rent a car</span>
                 </span>
@@ -247,7 +247,7 @@ export default function Home() {
                 </span>
               </h1>
               <div className="hero-subtitle overflow-hidden">
-                <p className="text-xl font-medium max-w-md">
+                <p className="text-xl font-medium max-w-md text-[var(--ink)]">
                   Choose a car, pick your dates, and book. No counter, no queue.
                 </p>
               </div>
@@ -275,12 +275,12 @@ export default function Home() {
       </section>
 
       {/* MARQUEE 1 */}
-      <div className="w-full bg-[var(--btn-primary-bg)] shadow-[4px_4px_0px_0px_var(--shadow-color)] border-y-2 border-[var(--border)] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
+      <div className="w-full bg-[var(--accent)] shadow-[4px_4px_0px_0px_var(--shadow)] border-y-2 border-[var(--border)] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
         <div className="animate-marquee inline-flex w-max">
           {[...Array(4)].map((_, i) => (
             <span
               key={i}
-              className="text-black font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
+              className="text-[var(--on-accent)] font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
             >
               FREE CANCELLATION <span className="mx-8">★</span> NO HIDDEN FEES{" "}
               <span className="mx-8">★</span> 24/7 SUPPORT{" "}
@@ -291,11 +291,11 @@ export default function Home() {
       </div>
 
       {/* FEATURED FLEET */}
-      <section id="fleet" className="py-16 md:py-24 bg-[var(--background)]">
+      <section id="fleet" className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
           <Reveal>
             <div className="flex flex-col md:flex-row items-baseline justify-between mb-16">
-              <h2 className="text-h2">Available Fleet</h2>
+              <h2 className="text-h2 text-[var(--ink)]">Available Fleet</h2>
               <BrutalistButton href="/cars" containerClassName="mt-4 md:mt-0">
                 <span>View all vehicles</span>
                 <ArrowIcon size={20} />
@@ -320,13 +320,13 @@ export default function Home() {
                   <div className="flex-1 w-full flex flex-col justify-between p-6 md:p-8">
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                       <div>
-                        <p className="text-small uppercase tracking-widest text-[var(--text-tertiary)] mb-1">
+                        <p className="text-[14px] font-bold uppercase tracking-wider text-[var(--muted)] mb-1">
                           {car.category}
                         </p>
-                        <h3 className="text-h3 mb-4">
+                        <h3 className="text-h3 mb-4 text-[var(--card-ink)]">
                           {car.brand} {car.model}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-4 text-small text-[var(--text-secondary)]">
+                        <div className="flex flex-wrap items-center gap-4 text-[14px] font-medium text-[var(--muted)]">
                           <span>{car.seats} Seats</span>
                           <span className="w-1 h-1 bg-[var(--border)] rounded-full" />
                           <span>{car.transmission}</span>
@@ -336,8 +336,8 @@ export default function Home() {
                       </div>
 
                       <div className="text-left md:text-right">
-                        <span className="text-h3 block">${car.dailyPrice}</span>
-                        <span className="text-small block mt-1">per day</span>
+                        <span className="text-h3 block text-[var(--card-ink)]">${car.dailyPrice}</span>
+                        <span className="text-[14px] font-bold uppercase tracking-wider block mt-1 text-[var(--muted)]">per day</span>
                       </div>
                     </div>
 
@@ -367,7 +367,7 @@ export default function Home() {
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12">
               <div>
-                <h2 className="text-h2">What drivers & Renters say.</h2>
+                <h2 className="text-h2 text-[var(--ink)]">What drivers & Renters say.</h2>
               </div>
             </div>
 
@@ -375,22 +375,22 @@ export default function Home() {
             <div
               onMouseEnter={() => setIsTestimonialPaused(true)}
               onMouseLeave={() => setIsTestimonialPaused(false)}
-              className="flex flex-col md:flex-row bg-[var(--surface)] border-[2px] border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow-color)] relative overflow-hidden"
+              className="flex flex-col md:flex-row bg-[var(--card)] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)] relative overflow-hidden"
             >
               {/* Left Column: Yellow Accent with Quote & Stars */}
-              <div className="w-full md:w-[240px] lg:w-[280px] shrink-0 bg-[var(--icon)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--border)] flex flex-row md:flex-col items-center justify-between md:justify-center p-6 md:p-8 gap-4 md:gap-8">
+              <div className="w-full md:w-[240px] lg:w-[280px] shrink-0 bg-[var(--accent)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--border)] flex flex-row md:flex-col items-center justify-between md:justify-center p-6 md:p-8 gap-4 md:gap-8">
                 {/* Quote Icon Badge */}
                 <div
                   ref={badgeRef}
-                  className="w-12 h-12 md:w-16 md:h-16 bg-black flex items-center justify-center border-2 border-black shadow-[3px_3px_0px_0px_#000] rotate-[-3deg] shrink-0 will-change-transform"
+                  className="w-12 h-12 md:w-16 md:h-16 bg-[var(--on-accent)] flex items-center justify-center border-2 border-[var(--on-accent)] shadow-[3px_3px_0px_0px_var(--on-accent)] rotate-[-3deg] shrink-0 will-change-transform"
                 >
-                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-[#e8b430] fill-[#e8b430]" />
+                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-[var(--accent)] fill-[var(--accent)]" />
                 </div>
 
                 {/* 5-Star Rating */}
-                <div ref={starsRef} className="flex gap-1 text-black">
+                <div ref={starsRef} className="flex gap-1 text-[var(--on-accent)]">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={18} className="fill-black text-black" />
+                    <Star key={i} size={18} className="fill-[var(--on-accent)] text-[var(--on-accent)]" />
                   ))}
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function Home() {
               <div className="p-6 md:p-12 lg:p-14 flex flex-col justify-between gap-8 flex-1 min-h-[250px] md:min-h-[280px]">
                 <blockquote
                   ref={quoteTextRef}
-                  className="font-display text-2xl sm:text-3xl lg:text-4xl text-[var(--text-primary)] leading-[1.25] uppercase tracking-tight will-change-transform"
+                  className="font-display text-2xl sm:text-3xl lg:text-4xl text-[var(--card-ink)] leading-[1.25] uppercase tracking-tight will-change-transform"
                 >
                   &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
                 </blockquote>
@@ -408,14 +408,14 @@ export default function Home() {
                   <div>
                     <p
                       ref={authorRef}
-                      className="text-xl md:text-2xl font-display font-black text-[var(--text-primary)] uppercase tracking-wider will-change-transform"
+                      className="text-xl md:text-2xl font-display font-black text-[var(--card-ink)] uppercase tracking-wider will-change-transform"
                     >
                       {testimonials[activeTestimonial].name}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="font-mono text-xs font-bold text-[var(--text-tertiary)] mr-2 md:hidden">
+                    <span className="font-mono text-[14px] font-bold text-[var(--muted)] mr-2 md:hidden">
                       0{activeTestimonial + 1} / 0{testimonials.length}
                     </span>
                     <BrutalistButton
@@ -447,8 +447,8 @@ export default function Home() {
             <div className="lg:w-1/3">
               <div className="sticky top-32">
                 <Reveal>
-                  <h2 className="text-h2 mb-6 pt-[0.1em]">Questions?</h2>
-                  <p className="text-xl font-medium max-w-sm">
+                  <h2 className="text-h2 mb-6 pt-[0.1em] text-[var(--ink)]">Questions?</h2>
+                  <p className="text-xl font-medium max-w-sm text-[var(--muted)]">
                     Everything you need to know about booking and hitting the
                     road.
                   </p>
@@ -459,7 +459,7 @@ export default function Home() {
               {faqs.map((faq, idx) => (
                 <Reveal key={idx} delay={Math.min(idx, 6) * 60}>
                   <div
-                    className={`border-b-2 border-[var(--border)] transition-all duration-200 ${activeFaq === idx ? "border-l-4 border-l-[var(--icon)] pl-6 bg-[var(--surface)] shadow-[4px_4px_0px_0px_var(--shadow-color)] mb-4 -ml-[2px]" : "pl-0 bg-transparent"}`}
+                    className={`border-b-2 border-[var(--border)] transition-all duration-200 ${activeFaq === idx ? "border-l-4 border-l-[var(--accent)] pl-6 bg-[var(--card)] shadow-[4px_4px_0px_0px_var(--shadow)] mb-4 -ml-[2px]" : "pl-0 bg-transparent"}`}
                   >
                     <button
                       onClick={() =>
@@ -467,23 +467,23 @@ export default function Home() {
                       }
                       className="w-full py-8 flex items-center justify-between text-left group px-4"
                     >
-                      <span className="text-h3 group-hover:text-[var(--icon)] transition-colors">
+                      <span className="text-h3 group-hover:text-[var(--faq-hover)] transition-colors text-[var(--ink)]">
                         {faq.q}
                       </span>
                       {activeFaq === idx ? (
                         <Minus
                           size={24}
-                          className="text-[var(--text-primary)] shrink-0"
+                          className="text-[var(--ink)] shrink-0"
                         />
                       ) : (
                         <Plus
                           size={24}
-                          className="text-[var(--text-primary)] shrink-0"
+                          className="text-[var(--ink)] shrink-0"
                         />
                       )}
                     </button>
                     {activeFaq === idx && (
-                      <div className="pb-8 px-4 text-body max-w-2xl">
+                      <div className="pb-8 px-4 text-[16px] leading-relaxed max-w-2xl text-[var(--muted)]">
                         {faq.a}
                       </div>
                     )}
@@ -496,19 +496,19 @@ export default function Home() {
       </section>
 
       {/* MARQUEE 2 */}
-      <div className="w-full bg-[#111] border-y-2 border-[#111] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
+      <div className="w-full bg-[#111] border-y-2 border-[var(--border)] h-[56px] flex items-center overflow-hidden whitespace-nowrap relative z-10">
         <div className="animate-marquee inline-flex w-max [animation-direction:reverse]">
           {[...Array(4)].map((_, i) => (
             <span
               key={i}
-              className="text-[#F4F3ED] font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
+              className="text-[#F4F2EC] font-display text-xl uppercase tracking-widest flex items-center shrink-0 pr-8"
             >
               FREE CANCELLATION{" "}
-              <span className="mx-8 text-[var(--icon)]">★</span> NO HIDDEN FEES{" "}
-              <span className="mx-8 text-[var(--icon)]">★</span> INSURANCE
-              INCLUDED <span className="mx-8 text-[var(--icon)]">★</span>{" "}
-              [LOCATIONS] <span className="mx-8 text-[var(--icon)]">★</span>{" "}
-              24/7 SUPPORT <span className="mx-8 text-[var(--icon)]">★</span>
+              <span className="mx-8 text-[var(--accent)]">★</span> NO HIDDEN FEES{" "}
+              <span className="mx-8 text-[var(--accent)]">★</span> INSURANCE
+              INCLUDED <span className="mx-8 text-[var(--accent)]">★</span>{" "}
+              [LOCATIONS] <span className="mx-8 text-[var(--accent)]">★</span>{" "}
+              24/7 SUPPORT <span className="mx-8 text-[var(--accent)]">★</span>
             </span>
           ))}
         </div>
@@ -520,7 +520,7 @@ export default function Home() {
           <Reveal>
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16">
               <div className="w-full md:w-1/2">
-                <h2 className="font-display text-[clamp(62px,6vw,120px)] leading-[0.95] pt-[0.1em] uppercase tracking-tight text-[var(--text-primary)] m-0 p-0">
+                <h2 className="font-display text-[clamp(62px,6vw,120px)] leading-[0.95] pt-[0.1em] uppercase tracking-tight text-[var(--ink)] m-0 p-0">
                   LET'S FIND A CAR.
                 </h2>
               </div>

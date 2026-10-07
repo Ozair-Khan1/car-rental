@@ -83,14 +83,14 @@ export function SearchPanel({
 
   if (variant === "bar") {
     return (
-      <div className="w-full bg-white border-2 border-black shadow-[6px_6px_0px_0px_#000000] p-4 md:p-5">
+      <div className="w-full bg-[var(--card)] border-2 border-[var(--border)] shadow-[6px_6px_0px_0px_var(--shadow)] p-4 md:p-5">
         <form
           onSubmit={handleSearch}
           className="flex flex-col md:flex-row gap-4 items-stretch md:items-end w-full"
         >
           {/* Pick-up location */}
           <div className="flex-1 flex flex-col gap-1.5 min-w-[200px]">
-            <label className="text-[12px] font-bold text-black uppercase tracking-wider">
+            <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Pick-up location
             </label>
             <input
@@ -98,13 +98,13 @@ export function SearchPanel({
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="City, airport or address"
-              className="w-full h-[52px] px-4 bg-white border-2 border-black text-black font-semibold placeholder:text-neutral-500 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#E8B42A]"
+              className="w-full h-[52px] px-4 bg-[var(--card)] border-2 border-[var(--border)] text-[var(--card-ink)] font-semibold placeholder:text-[var(--muted)] placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
             />
           </div>
 
           {/* Pick-up date */}
           <div className="w-full md:w-[200px] lg:w-[230px] flex flex-col gap-1.5 shrink-0">
-            <label className="text-[12px] font-bold text-black uppercase tracking-wider">
+            <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Pick-up date
             </label>
             <DatePicker value={pickup} onChange={setPickup} />
@@ -112,7 +112,7 @@ export function SearchPanel({
 
           {/* Drop-off date */}
           <div className="w-full md:w-[200px] lg:w-[230px] flex flex-col gap-1.5 shrink-0">
-            <label className="text-[12px] font-bold text-black uppercase tracking-wider">
+            <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Drop-off date
             </label>
             <DatePicker
@@ -136,7 +136,7 @@ export function SearchPanel({
           </div>
         </form>
         {error && (
-          <div className="text-[13px] font-bold text-red-600 mt-2 px-1">
+          <div className="text-[14px] font-bold text-red-500 mt-2 px-1">
             {error}
           </div>
         )}
@@ -151,7 +151,7 @@ export function SearchPanel({
         className="card-brutalist flex flex-col gap-5 w-full"
       >
         <div className="flex flex-col gap-2 relative">
-          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
             Pick-up location
           </label>
           <input
@@ -165,14 +165,14 @@ export function SearchPanel({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2 relative">
-            <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+            <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Pick-up date
             </label>
             <DatePicker value={pickup} onChange={setPickup} />
           </div>
 
           <div className="flex flex-col gap-2 relative">
-            <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+            <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Drop-off date
             </label>
             <DatePicker
@@ -205,7 +205,7 @@ export function SearchPanel({
       >
         {/* Pick-up Location */}
         <div className="flex-1 w-full flex flex-col gap-2">
-          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
             Pick-up location
           </label>
           <input
@@ -219,7 +219,7 @@ export function SearchPanel({
 
         {/* Pick-up Date */}
         <div className="w-full lg:w-48 flex flex-col gap-2">
-          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
             Pick-up date
           </label>
           <DatePicker value={pickup} onChange={setPickup} />
@@ -227,7 +227,7 @@ export function SearchPanel({
 
         {/* Drop-off Date */}
         <div className="w-full lg:w-48 flex flex-col gap-2">
-          <label className="text-[13px] font-semibold text-[var(--text-primary)] uppercase tracking-wider">
+          <label className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
             Drop-off date
           </label>
           <DatePicker
@@ -250,19 +250,19 @@ export function SearchPanel({
         </div>
       </form>
 
-      {error && <div className="text-[13px] text-red-600 px-2">{error}</div>}
+      {error && <div className="text-[14px] text-red-500 px-2">{error}</div>}
 
       {/* How it works — 3-step visual flow */}
       <div className="flex items-center justify-center w-full gap-0 pt-4 pb-1">
         {/* Step 1 */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-            <span className="text-[13px] font-bold text-black">1</span>
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--accent)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow)]">
+            <span className="text-[14px] font-bold text-[var(--on-accent)]">1</span>
           </div>
-          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+          <span className="text-[14px] font-semibold uppercase tracking-wider text-[var(--muted)] hidden sm:inline">
             Choose a location
           </span>
-          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+          <span className="text-[14px] font-semibold text-[var(--muted)] sm:hidden">
             Location
           </span>
         </div>
@@ -272,13 +272,13 @@ export function SearchPanel({
 
         {/* Step 2 */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-            <span className="text-[13px] font-bold text-black">2</span>
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--accent)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow)]">
+            <span className="text-[14px] font-bold text-[var(--on-accent)]">2</span>
           </div>
-          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+          <span className="text-[14px] font-semibold uppercase tracking-wider text-[var(--muted)] hidden sm:inline">
             Pick-up date
           </span>
-          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+          <span className="text-[14px] font-semibold text-[var(--muted)] sm:hidden">
             Pick-up
           </span>
         </div>
@@ -288,13 +288,13 @@ export function SearchPanel({
 
         {/* Step 3 */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--btn-primary-bg)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-            <span className="text-[13px] font-bold text-black">3</span>
+          <div className="w-8 h-8 border-2 border-[var(--border)] bg-[var(--accent)] flex items-center justify-center shadow-[2px_2px_0px_0px_var(--shadow)]">
+            <span className="text-[14px] font-bold text-[var(--on-accent)]">3</span>
           </div>
-          <span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-primary)] hidden sm:inline">
+          <span className="text-[14px] font-semibold uppercase tracking-wider text-[var(--muted)] hidden sm:inline">
             Drop-off date
           </span>
-          <span className="text-[13px] font-semibold text-[var(--text-primary)] sm:hidden">
+          <span className="text-[14px] font-semibold text-[var(--muted)] sm:hidden">
             Drop-off
           </span>
         </div>

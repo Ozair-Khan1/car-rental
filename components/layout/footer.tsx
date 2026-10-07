@@ -24,7 +24,7 @@ export function Footer() {
     <footer className="pt-24 pb-12 w-full bg-transparent relative z-10 flex flex-col items-center">
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6">
         {/* Yellow Footer Card */}
-        <div className="bg-[#E8B42A] border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 md:p-12 text-black w-full flex flex-col gap-12">
+        <div className="bg-[#E8B42A] border-2 border-[var(--border)] shadow-[4px_4px_0px_0px_var(--shadow)] p-6 md:p-12 text-[var(--on-accent)] w-full flex flex-col gap-12">
           {/* Top row: Inverted Logo */}
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
             <Link
@@ -46,10 +46,10 @@ export function Footer() {
           {/* 4 Clean Columns: perfectly aligned baselines */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start">
             <Reveal delay={0} className="flex flex-col">
-              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-[var(--on-accent)] m-0 p-0 leading-none mb-5">
                 Company
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
+              <ul className="flex flex-col gap-4 text-[16px] text-[var(--on-accent)] font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/about"
@@ -78,10 +78,10 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={60} className="flex flex-col">
-              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-[var(--on-accent)] m-0 p-0 leading-none mb-5">
                 Rentals
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
+              <ul className="flex flex-col gap-4 text-[16px] text-[var(--on-accent)] font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/cars"
@@ -110,10 +110,10 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={120} className="flex flex-col">
-              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-[var(--on-accent)] m-0 p-0 leading-none mb-5">
                 Support
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
+              <ul className="flex flex-col gap-4 text-[16px] text-[var(--on-accent)] font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/help"
@@ -142,10 +142,10 @@ export function Footer() {
             </Reveal>
 
             <Reveal delay={180} className="flex flex-col">
-              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-black m-0 p-0 leading-none mb-5">
+              <h3 className="font-display font-normal text-[20px] uppercase tracking-[0.04em] text-[var(--on-accent)] m-0 p-0 leading-none mb-5">
                 Legal
               </h3>
-              <ul className="flex flex-col gap-4 text-[16px] text-black font-medium list-none m-0 p-0">
+              <ul className="flex flex-col gap-4 text-[16px] text-[var(--on-accent)] font-medium list-none m-0 p-0">
                 <li>
                   <Link
                     href="/legal/terms"
@@ -166,10 +166,10 @@ export function Footer() {
             </Reveal>
           </div>
 
-          <div className="w-full h-[2px] bg-black"></div>
+          <div className="w-full h-[2px] bg-[var(--on-accent)]"></div>
 
           {/* Bottom row: Copyright */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-[14px] text-black font-medium">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-[14px] text-[var(--on-accent)] font-medium">
             <div>
               &copy; {new Date().getFullYear()} DriveNow. All rights reserved.
             </div>
