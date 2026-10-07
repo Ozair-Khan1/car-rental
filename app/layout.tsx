@@ -46,9 +46,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            {/* Global Cream Grid Background across entire page and footer */}
+            <div className="fixed inset-0 opacity-50 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
             <Toaster position="top-center" richColors />
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 relative z-10">{children}</main>
             <Footer />
           </ThemeProvider>
         </SessionProvider>

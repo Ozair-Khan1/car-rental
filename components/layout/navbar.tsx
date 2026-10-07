@@ -57,9 +57,9 @@ export function Navbar() {
           : "bg-transparent py-6 border-b border-transparent",
       )}
     >
-      <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 relative z-50">
+          <Link href="/" className="flex items-center gap-2 relative z-50 -ml-1.5">
             <Image
               src="/logo.png"
               alt="DriveNow"
@@ -71,20 +71,30 @@ export function Navbar() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={cn(
-                  "text-sm font-bold uppercase tracking-widest transition-colors link-underline",
-                  pathname === link.href
-                    ? "text-[#e8b430]"
-                    : "text-[var(--text-primary)] hover:text-[#e8b430]",
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isCars = link.href === "/cars";
+              const isActive =
+                pathname === link.href ||
+                (isCars && pathname.startsWith("/cars"));
+              const isCarsActive = isActive && isCars;
+
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={cn(
+                    "text-sm font-bold uppercase tracking-widest transition-colors relative py-1",
+                    isCarsActive
+                      ? "text-black after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#E8B42A]"
+                      : isActive
+                        ? "text-[#e8b430] link-underline"
+                        : "text-[var(--text-primary)] hover:text-[#e8b430] link-underline",
+                  )}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden lg:flex items-center gap-6">
@@ -153,7 +163,13 @@ export function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className="text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] hover:text-[#e8b430] block w-full"
+                  className={cn(
+                    "text-3xl font-black uppercase tracking-tighter block w-full transition-colors",
+                    link.href === "/cars" &&
+                      (pathname === "/cars" || pathname.startsWith("/cars"))
+                      ? "text-black border-b-[3px] border-[#E8B42A] pb-1 w-fit"
+                      : "text-[var(--text-primary)] hover:text-[#e8b430]",
+                  )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}

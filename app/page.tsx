@@ -230,9 +230,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full selection:bg-[var(--text-primary)] selection:text-[var(--background)] overflow-x-hidden relative">
-      {/* Global Grid Background */}
-      <div className="fixed inset-0 opacity-50 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0 animate-grid" />
-
       {/* HERO SECTION */}
       <section
         ref={heroRef}

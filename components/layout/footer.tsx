@@ -21,8 +21,8 @@ export function Footer() {
   }
 
   return (
-    <footer className="pt-24 pb-12 w-full bg-[var(--background)] relative z-10 flex flex-col items-center">
-      <div className="container mx-auto px-4 md:px-6 max-w-[1200px]">
+    <footer className="pt-24 pb-12 w-full bg-transparent relative z-10 flex flex-col items-center">
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6">
         {/* Yellow Footer Card */}
         <div className="bg-[#E8B42A] border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 md:p-12 text-black w-full flex flex-col gap-12">
           {/* Top row: Inverted Logo */}
