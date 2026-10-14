@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Vehicle } from "@/lib/mock-data";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
+import { CURRENCY } from "@/lib/config";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -50,14 +51,14 @@ export function VehicleCard({ vehicle, rentalDays }: VehicleCardProps) {
         <div className="mt-auto flex items-end justify-between gap-4 border-t-2 border-[var(--border)] pt-5">
           <div className="flex flex-col">
             <span className="text-2xl md:text-3xl font-black text-[var(--card-ink)] leading-none block mb-1">
-              ${vehicle.dailyPrice}
+              {CURRENCY.symbol} {vehicle.dailyPrice}
             </span>
             <span className="text-[14px] font-bold uppercase tracking-wider text-[var(--muted)] block">
               PER DAY
             </span>
-            {totalPrice !== null && rentalDays && (
+            {totalPrice !== null && rentalDays !== undefined && rentalDays > 0 && (
               <span className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider block mt-1.5">
-                {rentalDays} {rentalDays === 1 ? "day" : "days"} · ${totalPrice}
+                {rentalDays} {rentalDays === 1 ? "day" : "days"} · {CURRENCY.symbol} {totalPrice}
               </span>
             )}
           </div>

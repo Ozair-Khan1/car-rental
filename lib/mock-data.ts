@@ -1,4 +1,4 @@
-export type VehicleCategory = 'Economy' | 'Sedan' | 'SUV' | 'Luxury' | 'Sports' | 'Van' | 'Electric';
+export type VehicleCategory = 'Economy' | 'Sedan' | 'SUV' | 'Luxury' | 'Sports';
 export type Transmission = 'Automatic' | 'Manual';
 export type FuelType = 'Petrol' | 'Diesel' | 'Hybrid' | 'Electric';
 
@@ -131,7 +131,7 @@ export const mockVehicles: Vehicle[] = [
     brand: 'Porsche',
     model: 'Taycan',
     year: 2025,
-    category: 'Electric',
+    category: 'Sports',
     dailyPrice: 249,
     locationId: 'loc-2',
     availability: 'Limited',
@@ -174,7 +174,7 @@ export const mockVehicles: Vehicle[] = [
     brand: 'Audi',
     model: 'e-tron GT',
     year: 2025,
-    category: 'Electric',
+    category: 'Luxury',
     dailyPrice: 189,
     locationId: 'loc-1',
     availability: 'Available',

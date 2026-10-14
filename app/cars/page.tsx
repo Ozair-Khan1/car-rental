@@ -7,6 +7,7 @@ import { VehicleCard } from "@/components/domain/vehicle-card";
 import { SearchPanel } from "@/components/domain/search-panel";
 import { BrutalistButton } from "@/components/ui/brutalist-button";
 import { mockVehicles } from "@/lib/mock-data";
+import { CURRENCY } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -16,7 +17,6 @@ const CATEGORIES = [
   "SUV",
   "Luxury",
   "Sports",
-  "Electric",
 ];
 const TRANSMISSIONS = ["Automatic", "Manual"];
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
@@ -53,6 +53,7 @@ function CarsContent() {
     "low-to-high",
   );
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [isSliderFocused, setIsSliderFocused] = useState(false);
 
   // Sync state if URL query params change externally
   useEffect(() => {
@@ -180,7 +181,7 @@ function CarsContent() {
     if (maxPrice < 300) {
       chips.push({
         id: "price",
-        label: `≤ $${maxPrice}/DAY`,
+        label: `≤ ${CURRENCY.symbol} ${maxPrice}/DAY`,
         onRemove: () => setMaxPrice(300),
       });
     }
@@ -208,6 +209,25 @@ function CarsContent() {
     setSearchLocation(location);
     setPickupDate(pickup);
     setDropoffDate(dropoff);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (location.trim()) {
+      params.set("location", location.trim());
+    } else {
+      params.delete("location");
+    }
+    if (pickup) {
+      params.set("pickup", pickup);
+    } else {
+      params.delete("pickup");
+    }
+    if (dropoff) {
+      params.set("dropoff", dropoff);
+    } else {
+      params.delete("dropoff");
+    }
+    const query = params.toString();
+    router.push(`/cars${query ? `?${query}` : ""}`, { scroll: false });
   };
 
   return (
@@ -271,27 +291,22 @@ function CarsContent() {
             )}
           >
             <div>
-              {/* Heading FILTERS + CLEAR ALL */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 leading-none tracking-normal">
-                  Filters
-                </h2>
-                {isFilterActive && (
-                  <button
-                    type="button"
-                    onClick={clearAllFilters}
-                    className="text-[14px] font-black uppercase tracking-wider text-[var(--ink)] underline hover:text-[var(--accent)] transition-colors"
-                  >
-                    CLEAR ALL
-                  </button>
-                )}
-              </div>
-
               {/* GROUP 1: TYPE */}
               <div>
-                <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 mb-4 leading-none tracking-normal">
-                  Type
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-display font-normal text-[22px] uppercase text-[var(--ink)] m-0 leading-none tracking-normal">
+                    Type
+                  </h3>
+                  {isFilterActive && (
+                    <button
+                      type="button"
+                      onClick={clearAllFilters}
+                      className="text-[14px] font-black uppercase tracking-wider text-[var(--ink)] underline hover:text-[var(--accent)] transition-colors"
+                    >
+                      CLEAR ALL
+                    </button>
+                  )}
+                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {CATEGORIES.map((category) => {
                     const isActive = activeCategory === category;
@@ -435,21 +450,58 @@ function CarsContent() {
                     Price
                   </h3>
                   <span className="text-[14px] font-bold text-[var(--muted)] uppercase tracking-wider">
-                    ≤ ${maxPrice}/day
+                    ≤ {CURRENCY.symbol} {maxPrice}/day
                   </span>
                 </div>
-                <input
-                  type="range"
-                  min={60}
-                  max={300}
-                  step={10}
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-[var(--accent)] cursor-pointer h-2 bg-[var(--card)] border border-[var(--border)] rounded-none"
-                />
+                {(() => {
+                  const minPrice = 60;
+                  const sliderMax = 300;
+                  const sliderPercent = Math.min(
+                    100,
+                    Math.max(
+                      0,
+                      ((maxPrice - minPrice) / (sliderMax - minPrice)) * 100,
+                    ),
+                  );
+
+                  return (
+                    <div className="relative py-2.5 flex items-center select-none group">
+                      {/* 6px black track (cream in dark mode) */}
+                      <div className="w-full h-[6px] bg-[var(--border)] relative">
+                        {/* Filled part in yellow #E8B42A with 2px black border */}
+                        <div
+                          className="absolute left-0 -top-[2px] h-[10px] bg-[var(--accent)] border-2 border-[var(--border)] pointer-events-none"
+                          style={{ width: `${sliderPercent}%` }}
+                        />
+                        {/* Square 20x20 thumb in yellow with 2px black border and 3px hard shadow */}
+                        <div
+                          className={cn(
+                            "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[20px] h-[20px] bg-[var(--accent)] border-2 border-[var(--border)] shadow-[3px_3px_0px_0px_var(--shadow)] pointer-events-none rounded-none transition-[left] duration-75",
+                            isSliderFocused &&
+                              "outline outline-2 outline-[var(--ink)] outline-offset-2",
+                          )}
+                          style={{ left: `${sliderPercent}%` }}
+                        />
+                      </div>
+                      {/* Keyboard accessible range input */}
+                      <input
+                        type="range"
+                        min={minPrice}
+                        max={sliderMax}
+                        step={10}
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                        onFocus={() => setIsSliderFocused(true)}
+                        onBlur={() => setIsSliderFocused(false)}
+                        aria-label="Filter by maximum daily price"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 focus:outline-none"
+                      />
+                    </div>
+                  );
+                })()}
                 <div className="flex justify-between text-[14px] font-bold text-[var(--muted)] mt-2">
-                  <span>$60</span>
-                  <span>$300</span>
+                  <span>{CURRENCY.symbol} 60</span>
+                  <span>{CURRENCY.symbol} 300</span>
                 </div>
               </div>
             </div>

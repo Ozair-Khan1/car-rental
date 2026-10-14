@@ -272,7 +272,7 @@ export function DatePicker({
           if (!isOpen && value) setViewDate(new Date(value + "T00:00:00"));
           setIsOpen(!isOpen);
         }}
-        className="input-field w-full text-left flex items-center justify-between gap-2 cursor-pointer"
+        className="input-field w-full h-[48px] py-0 text-left flex items-center justify-between gap-2 cursor-pointer"
       >
         <span className={value ? "text-[var(--card-ink)]" : "text-[var(--muted)]"}>
           {value ? formatDisplay(value) : placeholder}

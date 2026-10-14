@@ -98,7 +98,7 @@ export function SearchPanel({
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="City, airport or address"
-              className="w-full h-[52px] px-4 bg-[var(--card)] border-2 border-[var(--border)] text-[var(--card-ink)] font-semibold placeholder:text-[var(--muted)] placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+              className="w-full h-[48px] py-0 px-4 bg-[var(--card)] border-2 border-[var(--border)] text-[var(--card-ink)] font-semibold placeholder:text-[var(--muted)] placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
             />
           </div>
 
@@ -127,8 +127,8 @@ export function SearchPanel({
             <BrutalistButton
               type="submit"
               variant="primary"
-              containerClassName="w-full md:w-[150px]"
-              className="h-[52px] px-6 text-sm font-black"
+              containerClassName="w-full md:w-[150px] h-[48px]"
+              className="h-full py-0 px-6 text-sm font-black"
             >
               <span>Search</span>
               <ArrowRight size={18} />
